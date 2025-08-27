@@ -1,1 +1,6 @@
-<p>button works!</p>
+<button 
+  class="btn"
+  [ngClass]="[color, size]"
+  (click)="onClick()">
+  {{ text }}
+</button>
