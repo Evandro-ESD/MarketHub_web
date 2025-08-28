@@ -1,1 +1,302 @@
 <p>cadastro works!</p>
+<div class="form-container">
+  <div class="form-card registration-card">
+    <!-- Success Message -->
+    <div class="success-message" *ngIf="showSuccessMessage">
+      ✅ Cadastro realizado com sucesso! Bem-vindo ao Vem Que Tem!
+    </div>
+
+    <!-- Form Header -->
+    <div class="form-header">
+      <div class="welcome-icon">👤</div>
+      <h2>Cadastro de Usuário</h2>
+      <p>Complete seu perfil e encontre os melhores estabelecimentos</p>
+      <!-- <p>Bem-vindo, usuário de email: {{ emailUsuario }}</p> -->
+    </div>
+
+    <form >
+    <!-- <form [formGroup]="cadastroUsuario" (ngSubmit)="enviar()" noValidate> -->
+      <!-- Campo Oculto para pessoaId -->
+      <input type="hidden" formControlName="pessoa_id"  />
+      <!-- Nome Completo e Nome de Usuário -->
+      <div class="form-group form-group-inline">
+        <div>
+          <label for="nome_completo" class="form-label required"
+            >Nome Completo</label
+          >
+          <input
+            id="nome_completo"
+            formControlName="nome_completo"
+            type="text"
+            class="form-input"
+            placeholder="Digite seu nome completo"
+            maxlength="100"
+            required
+          />
+          <div
+            class="field-error"
+            *ngIf="
+              cadastroUsuario.get('nome_completo')?.invalid &&
+              cadastroUsuario.get('nome_completo')?.touched
+            "
+          >
+            <small>Nome completo é obrigatório</small>
+          </div>
+        </div>
+
+        <div>
+          <label for="nome_primary" class="form-label required"
+            >Nome de Usuário</label
+          >
+          <input
+            id="nome_primary"
+            formControlName="nome_primary"
+            type="text"
+            class="form-input"
+            placeholder="Digite o nome do usuário"
+            maxlength="100"
+          />
+          <div
+            class="field-error"
+            *ngIf="
+              cadastroUsuario.get('nome_primary')?.invalid &&
+              cadastroUsuario.get('nome_primary')?.touched
+            "
+          >
+            <small>Nome do usuário é obrigatório</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- E-mail -->
+      <!-- <div class="form-group">
+        <label for="email" class="form-label required">E-mail</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="form-input"
+          placeholder="seu.email@exemplo.com"
+          maxlength="120"
+        />
+        <div
+          class="field-error"
+          *ngIf="
+            cadastroUsuario.get('email')?.invalid &&
+            cadastroUsuario.get('email')?.touched
+          "
+        >
+          <small>E-mail válido é obrigatório</small>
+        </div>
+      </div> -->
+
+      <!-- Sexo -->
+      <div class="form-group">
+        <label for="sexo" class="form-label required">Sexo</label>
+        <select id="sexo" formControlName="sexo" class="form-select" required>
+          <option value="">Selecione seu sexo</option>
+          <option value="M">👨 Masculino</option>
+          <option value="F">👩 Feminino</option>
+        </select>
+        <div
+          class="field-error"
+          *ngIf="
+            cadastroUsuario.get('sexo')?.invalid &&
+            cadastroUsuario.get('sexo')?.touched
+          "
+        >
+          <small>Sexo é obrigatório</small>
+        </div>
+      </div>
+
+      <!-- Data de Nascimento e Estado -->
+      <div class="form-group form-group-inline">
+        <div>
+          <label for="nascimento" class="form-label required"
+            >Data de Nascimento</label
+          >
+          <input
+            type="date"
+            id="nascimento"
+            formControlName="nascimento"
+            class="form-input"
+          />
+          <div
+            class="field-error"
+            *ngIf="
+              cadastroUsuario.get('nascimento')?.invalid &&
+              cadastroUsuario.get('nascimento')?.touched
+            "
+          >
+            <small>Data de nascimento é obrigatória</small>
+          </div>
+        </div>
+
+        <div>
+          <label for="estado" class="form-label required">Estado</label>
+          <select
+            id="estado"
+            formControlName="estado"
+            class="form-select"
+            required
+          >
+            <option value="">Selecione seu estado</option>
+            <option value="AC">Acre</option>
+            <option value="AL">Alagoas</option>
+            <option value="AP">Amapá</option>
+            <option value="AM">Amazonas</option>
+            <option value="BA">Bahia</option>
+            <option value="CE">Ceará</option>
+            <option value="DF">Distrito Federal</option>
+            <option value="ES">Espírito Santo</option>
+            <option value="GO">Goiás</option>
+            <option value="MA">Maranhão</option>
+            <option value="MT">Mato Grosso</option>
+            <option value="MS">Mato Grosso do Sul</option>
+            <option value="MG">Minas Gerais</option>
+            <option value="PA">Pará</option>
+            <option value="PB">Paraíba</option>
+            <option value="PR">Paraná</option>
+            <option value="PE">Pernambuco</option>
+            <option value="PI">Piauí</option>
+            <option value="RJ">Rio de Janeiro</option>
+            <option value="RN">Rio Grande do Norte</option>
+            <option value="RS">Rio Grande do Sul</option>
+            <option value="RO">Rondônia</option>
+            <option value="RR">Roraima</option>
+            <option value="SC">Santa Catarina</option>
+            <option value="SP">São Paulo</option>
+            <option value="SE">Sergipe</option>
+            <option value="TO">Tocantins</option>
+          </select>
+          <div
+            class="field-error"
+            *ngIf="
+              cadastroUsuario.get('estado')?.invalid &&
+              cadastroUsuario.get('estado')?.touched
+            "
+          >
+            <small>Estado é obrigatório</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Biografia -->
+      <div class="form-group">
+        <label for="bio" class="form-label">Biografia</label>
+        <textarea
+          id="bio"
+          formControlName="bio"
+          class="form-textarea"
+          placeholder="Conte um pouco sobre você (máximo 500 caracteres)"
+          maxlength="500"
+          rows="4"
+        ></textarea>
+        <div class="char-count">
+          <!-- {{ cadastroUsuario.get("bio")?.value?.length || 0 }}-->
+            /500 caracteres 
+        </div>
+      </div>
+
+      <!-- Senha -->
+      <!-- <div class="form-group">
+        <label for="senha" class="form-label required">Senha</label>
+        <div class="password-input-group">
+          <input
+            [type]="mostrarSenha ? 'text' : 'password'"
+            id="senha"
+            formControlName="senha"
+            class="form-input"
+            placeholder="Mínimo 6 caracteres"
+            maxlength="255"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="mostrarSenha = !mostrarSenha"
+            aria-label="Mostrar/ocultar senha"
+          >
+            <span>{{ mostrarSenha ? "👁️" : "👁️‍🗨️" }}</span>
+          </button>
+        </div>
+        <div
+          class="field-error"
+          *ngIf="
+            cadastroUsuario.get('senha')?.invalid &&
+            cadastroUsuario.get('senha')?.touched
+          "
+        >
+          <small>Senha deve ter pelo menos 6 caracteres</small>
+        </div>
+      </div> -->
+
+      <!-- Upload de Fotos -->
+      <div class="form-group">
+        <label class="form-label">Fotos do Usuário (até 5)</label>
+        <div class="file-upload-area">
+          <input
+            type="file"
+            id="foto1"
+            accept="image/*"
+            
+            style="display: none"
+          />
+          <label for="foto1" class="file-upload-btn">
+            <span>📷 Adicionar Foto</span>
+          </label>
+        </div>
+        <div class="files-preview" id="filesPreview"></div>
+      </div>
+
+      <!-- Termos e Privacidade -->
+      <div class="form-group checkbox-group">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            id="termos_privacidade"
+            formControlName="termos_privacidade"
+            class="checkbox-input"
+          />
+          <span class="checkbox-custom"></span>
+          <span class="checkbox-text">
+            Confirmo que as informações fornecidas são verdadeiras e estou
+            ciente de que dados falsos podem resultar no cancelamento do
+            cadastro
+            <span class="required">*</span>
+          </span>
+        </label>
+        <div
+          class="field-error"
+          *ngIf="
+            cadastroUsuario.get('termos_privacidade')?.invalid &&
+            cadastroUsuario.get('termos_privacidade')?.touched
+          "
+        >
+          <small>Você deve aceitar os termos</small>
+        </div>
+      </div>
+
+      <!-- Botões -->
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="form-btn primary"
+        >
+          <span *ngIf="!carregando">Cadastrar Usuário</span>
+          <span *ngIf="carregando">
+            
+            <i class="loading-spinner"></i>
+            Cadastrando...
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="form-btn secondary"
+        >
+          <span>🔄 Limpar Formulário</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
