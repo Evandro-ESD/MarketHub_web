@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators, ɵInternalFormsSharedModule } from "@angular/forms";
+import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
+import { CadastroService } from '../../../core/services/cadastro.service';
+
 
 @Component({
   selector: 'app-cadastro',
@@ -11,8 +13,9 @@ import { FormBuilder, ReactiveFormsModule, Validators, ɵInternalFormsSharedModu
 export class CadastroComponent {
 
   loading = false;
-
   fb = inject(FormBuilder)
+  cadastroService = inject(CadastroService)
+    
 
   formCadastro = this.fb.group({
     nome: ['', [Validators.required]],
@@ -24,9 +27,12 @@ export class CadastroComponent {
   cadastrar() {
     this.loading = true;
 
-    // console.log(this.formCadastro.value)
+    // console.log(this.formCadastro.value) 
 
-
+    this.cadastroService.cadastrarUsuario(this.formCadastro.value).subscribe({
+      next: (response)=>{
+        console.log("response no cadastro component", response)     }
+    })
 
     // Simulação de envio
     setTimeout(() => {
