@@ -4,10 +4,19 @@
   </div>
 
   <nav class="menu">
-    @if (true) {
+    @if (!authService.isAdmin()) {
       <app-link class="md" text="Cadastro de produtos" linkRotas="/admin/tela-produtos"></app-link>
     }
     <app-link class="md" text="login" linkRotas="/login"></app-link>
     <app-link text="Cadastre-se" linkRotas="/cadastro"></app-link>
+
+    <!-- Info usuário -->
+     @if(authService.isLoggedIn()){}
+      <span >
+        <!-- implementar caminho da imagem do usuário -->
+        <img [src]="authService.currentUser()?.avatarUrl" class="avatar">
+        {{ authService.currentUser()?.name }}
+        <button (click)="authService.logout()">Logout</button>
+      </span>
   </nav>
 </header>
