@@ -1,5 +1,3 @@
-<p>cadastro works</p>
-
 <div class="form-container">
     <div class="form-card registration-card">
         <!-- Success Message -->
@@ -11,9 +9,7 @@
             <p>Complete seu perfil e encontre os melhores estabelecimentos</p>
         </div>
 
-        <form noValidate (click)="cadastrar()">
-            <!-- Campo Oculto para pessoaId -->
-            <input type="hidden" formControlName="pessoa_id" />
+        <form [formGroup]="formCadastro" (ngSubmit)="cadastrar()" noValidate>
 
             <!-- Nome Completo e Nome de Usuário -->
             <div class="form-group form-group-inline">
@@ -41,7 +37,7 @@
             <div class="form-group">
                 <label class="form-label">Fotos do Perfil</label>
                 <div class="file-upload-area">
-                    <input type="file" id="foto1" accept="image/*" style="display: none" />
+                    <input type="file" id="foto1" accept="image/*" style="display: none" formControlName="foto" />
                     <label for="foto1" class="file-upload-btn">
                         <span>Adicionar Foto</span>
                     </label>
@@ -49,31 +45,22 @@
                 <div class="files-preview" id="filesPreview"></div>
             </div>
 
-            <!-- Opções de usuários -->
+            <!-- Tipo de usuário -->
             <div class="form-group checkbox-group">
-                <!-- usuário comun -->
                 <label class="checkbox-label">
-                    <input type="radio" name="tipo_usuario" formControlName="perfil" value="comum"
-                        class="checkbox-input" />
+                    <input type="radio" name="perfil" formControlName="perfil" value="comum" />
                     <span class="checkbox-custom"></span>
-                    <span class="checkbox-text">
-                        Usuário comum
-                        <span class="required">*</span>
-                    </span>
+                    <span class="checkbox-text">Usuário comum<span class="required">*</span></span>
                 </label>
 
-                <!-- usuário vendedor -->
                 <label class="checkbox-label">
-                    <input type="radio" name="tipo_usuario" formControlName="perfil" value="vendedor"
-                        class="checkbox-input" />
+                    <input type="radio" name="perfil" formControlName="perfil" value="vendedor" />
                     <span class="checkbox-custom"></span>
-                    <span class="checkbox-text">
-                        Vendedor
-                        <span class="required">*</span>
-                    </span>
+                    <span class="checkbox-text">Vendedor<span class="required">*</span></span>
                 </label>
 
-                <div class="field-error">
+                <div class="field-error"
+                    *ngIf="formCadastro.get('perfil')?.invalid && formCadastro.get('perfil')?.touched">
                     <small>Você deve escolher um tipo de usuário</small>
                 </div>
             </div>
