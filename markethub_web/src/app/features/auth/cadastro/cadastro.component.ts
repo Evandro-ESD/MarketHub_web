@@ -1,9 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators, } from "@angular/forms";
 
 @Component({
   selector: 'app-cadastro',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.css'
 })

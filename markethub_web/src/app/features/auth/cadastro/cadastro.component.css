@@ -1,0 +1,210 @@
+/* Container geral do formulário */
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Card do formulário */
+.form-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  overflow: hidden;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Header do formulário */
+.form-header {
+  padding: 20px;
+  color: #fff;
+  text-align: center;
+}
+
+.form-header h2 {
+  margin: 10px 0 5px;
+  font-size: 1.8rem;
+}
+
+.form-header p {
+  font-size: 0.95rem;
+  color: #eee;
+}
+
+/* Ícone do usuário */
+.welcome-icon {
+  font-size: 3rem;
+  margin-bottom: 5px;
+}
+
+/* Formulário */
+form {
+  padding: 20px;
+}
+
+/* Grupos de campo */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group-inline {
+  display: flex;
+  gap: 10px;
+}
+
+.form-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: blueviolet;
+}
+
+/* Área de upload */
+.file-upload-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.file-upload-btn {
+  display: inline-block;
+  background-color: blueviolet;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.file-upload-btn:hover {
+  background-color: darkviolet;
+}
+
+.files-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Checkbox customizado */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+}
+
+.checkbox-input {
+  opacity: 0;
+  position: absolute;
+}
+
+.checkbox-custom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  display: inline-block;
+  transition: all 0.3s;
+}
+
+.checkbox-input:checked + .checkbox-custom {
+  background-color: blueviolet;
+  border-color: blueviolet;
+}
+
+.checkbox-text {
+  font-size: 0.95rem;
+}
+
+/* Erros */
+.field-error small {
+  color: red;
+  font-size: 0.85rem;
+  display: none; /* aparecer quando houver erro */
+}
+
+/* Botões */
+.form-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+button {
+  background-color: blueviolet;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+button:hover {
+  background-color: darkviolet;
+}
+
+button.secondary {
+  background-color: #ccc;
+  color: #333;
+}
+
+button.secondary:hover {
+  background-color: #aaa;
+}
+
+/* Loading spinner dentro do botão */
+.loading-spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #fff;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Animação do card */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
