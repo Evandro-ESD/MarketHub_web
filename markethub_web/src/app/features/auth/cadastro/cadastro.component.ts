@@ -18,12 +18,21 @@ export class CadastroComponent {
     image: ['']
   })
 
+  loading = false;
 
-  onSubmit(cadastro: any, e:Event){
-    e.preventDefault()
+  cadastrar() {
+    this.loading = true;
 
-    console.log("Funciona!!")
-    console.log("Valores: ", cadastro)
-    
+    // Simulação de envio
+    setTimeout(() => {
+      this.loading = false;
+      alert('Usuário cadastrado com sucesso!');
+      this.limparFormulario();
+    }, 2000); // aqui você chamaria seu serviço de cadastro real
+  }
+
+  limparFormulario() {
+    this.formCadastro.reset();
+    this.loading = false;
   }
 }

@@ -11,23 +11,23 @@
             <p>Complete seu perfil e encontre os melhores estabelecimentos</p>
         </div>
 
-        <form noValidate>
+        <form noValidate (click)="cadastrar()">
             <!-- Campo Oculto para pessoaId -->
             <input type="hidden" formControlName="pessoa_id" />
-            
+
             <!-- Nome Completo e Nome de Usuário -->
-           <div class="form-group form-group-inline">
+            <div class="form-group form-group-inline">
                 <div>
-                    <label for="nome_completo" class="form-label required">Nome completo</label>
-                    <input id="nome_completo" formControlName="nome_completo" type="text" class="form-input"
-                        placeholder="Digite seu nome completo" maxlength="100" required />
+                    <label for="nome_completo" class="form-label required">Nome</label>
+                    <input id="nome_completo" formControlName="nome" type="text" class="form-input"
+                        placeholder="Digite nickname para login" maxlength="100" required />
                     <div class="field-error">
                     </div>
                 </div>
             </div>
 
             <!-- Senha -->
-              <div class="form-group form-group-inline">
+            <div class="form-group form-group-inline">
                 <div>
                     <label for="senha" class="form-label required">Senha</label>
                     <input id="senha" formControlName="senha" type="text" class="form-input"
@@ -36,7 +36,6 @@
                     </div>
                 </div>
             </div>
-            
 
             <!-- Upload de Fotos -->
             <div class="form-group">
@@ -50,53 +49,50 @@
                 <div class="files-preview" id="filesPreview"></div>
             </div>
 
-            <!-- Termos e Privacidade -->
+            <!-- Opções de usuários -->
             <div class="form-group checkbox-group">
-
                 <!-- usuário comun -->
-
                 <label class="checkbox-label">
-                    <input type="checkbox" id="termos_privacidade" formControlName="termos_privacidade"
+                    <input type="radio" name="tipo_usuario" formControlName="perfil" value="comum"
                         class="checkbox-input" />
                     <span class="checkbox-custom"></span>
                     <span class="checkbox-text">
-                        Usuário comun
+                        Usuário comum
                         <span class="required">*</span>
                     </span>
                 </label>
 
-                <!-- usuário vendedor/comun -->
+                <!-- usuário vendedor -->
                 <label class="checkbox-label">
-                    <input type="checkbox" id="termos_privacidade" formControlName="termos_privacidade"
+                    <input type="radio" name="tipo_usuario" formControlName="perfil" value="vendedor"
                         class="checkbox-input" />
                     <span class="checkbox-custom"></span>
                     <span class="checkbox-text">
-                        vendedor
+                        Vendedor
                         <span class="required">*</span>
                     </span>
                 </label>
+
                 <div class="field-error">
-
-                    <!-- implementar erros -->
-                    <small>Você deve aceitar os termos</small>
+                    <small>Você deve escolher um tipo de usuário</small>
                 </div>
             </div>
 
             <!-- Botões -->
             <div class="form-actions">
-                <button>
+                <button type="submit" (click)="cadastrar()">
                     <span>Cadastrar Usuário</span>
-                    <span>
-
+                    <span *ngIf="loading">
                         <i class="loading-spinner"></i>
                         Cadastrando...
                     </span>
                 </button>
 
-                <button type="button" class="form-btn secondary">
+                <button type="button" class="form-btn secondary" (click)="limparFormulario()">
                     <span>🔄 Limpar Formulário</span>
                 </button>
             </div>
+
         </form>
     </div>
 </div>
