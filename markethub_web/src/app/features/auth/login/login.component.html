@@ -12,20 +12,29 @@ email: 'user@email.com', password: '123' ,
 
 
 </p> -->
-<!-- tela de login<div class="container">
+
+
+<!-- tela de login -->
+
+<div class="container">
   <div class="login-form">
     <h2>Login</h2>
-    <form (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" [(ngModel)]="email" name="email" required>
+
+    <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
+      
+        <div class="form-group">
+        <label for="nome">Email:</label>
+        <input type="text" id="nome"  name="nome" formControlName="nome">
       </div>
+
       <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" id="password" [(ngModel)]="password" name="password" required>
+        <input type="password" id="password"  name="password" formControlName="password">
       </div>
+
       <button type="submit">Login</button>
     </form>
+
+
   </div>
 </div>
- -->

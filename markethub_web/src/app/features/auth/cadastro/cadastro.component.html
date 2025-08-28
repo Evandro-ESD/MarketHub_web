@@ -1,1 +1,20 @@
-<p>cadastro works!</p>
+<div class="container">
+    <form form="formCadastro" (click)="onSubmit(formCadastro.value, $event)">
+        <div class="cadastro">
+            <label >Nome:</label>
+            <input type="text" formControlName="nome">
+        </div>
+
+        <div class="cadastro">
+            <label >Senha:</label>
+            <input type="text" formControlName="senha">
+        </div>
+
+        <div class="cadastro">
+            <label >Foto de perfil:</label>
+            <input type="file" formControlName="image">
+        </div>
+
+        <button type="submit"> Cadastrar-se</button>
+    </form>
+</div>

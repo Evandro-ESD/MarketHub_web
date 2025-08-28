@@ -1,12 +1,13 @@
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs';
 
 export type UserRole = 'USER' | 'ADM';
 
 export interface User {
   id: number;
   name: string;
-  email: string;
   role: UserRole;
   avatarUrl?: string;
   token?: string;
@@ -18,28 +19,28 @@ export class AuthService {
   private currentUserSignal = signal<User | null>(null);
   currentUser = this.currentUserSignal.asReadonly();
 
-  constructor(private router: Router) {
+  private apiUrl = 'http://localhost:3000/auth/login';
+
+  constructor(private router: Router, private http: HttpClient) {
     this.loadFromLocalStorage();
   }
 
-  login(user: { email: string; password: string }, token: string, role: UserRole) {
-    const loggedUser: User = {
-      id: 1,
-      name: role === 'ADM' ? 'Administrador' : 'Usuário Comum',
-      email: user.email,
-      role,
-      // avatarUrl: `https://i.pravatar.cc/150?u=${user.email}`,
-      avatarUrl: '../../../assets/OIP.png',
-      token
-    };
-    this.currentUserSignal.set(loggedUser);
-    localStorage.setItem('user', JSON.stringify(loggedUser));
+  login(user: { name: string; password: string }) {
+    return this.http.post<User>(this.apiUrl, user).pipe(
+      tap((loggedUser) => {
+        // se backend não mandar avatar, pode definir fixo
+        loggedUser.avatarUrl = '../../../assets/OIP.png';
+
+        this.currentUserSignal.set(loggedUser);
+        localStorage.setItem('user', JSON.stringify(loggedUser));
+      })
+    );
   }
 
   logout() {
     this.currentUserSignal.set(null);
     localStorage.removeItem('user');
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
   }
 
   getToken(): string | null {

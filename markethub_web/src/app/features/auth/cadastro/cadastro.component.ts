@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, Validators, } from "@angular/forms";
 
 @Component({
   selector: 'app-cadastro',
@@ -8,4 +9,20 @@ import { Component } from '@angular/core';
 })
 export class CadastroComponent {
 
+  fb = inject(FormBuilder)
+
+  formCadastro = this.fb.group({
+    nome: ['', [Validators.required]],
+    senha: ['', [Validators.required]],
+    image: ['']
+  })
+
+
+  onSubmit(cadastro: any, e:Event){
+    e.preventDefault()
+
+    console.log("Funciona!!")
+    console.log("Valores: ", cadastro)
+    
+  }
 }
