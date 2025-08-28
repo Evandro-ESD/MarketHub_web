@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { LinkComponent } from '../link/link.component';
-import { AuthService } from './../../../core/services/auth.service';
+import { LinkComponent } from '../../../shared/components/link/link.component';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-header',
