@@ -1,13 +1,13 @@
 <header class="header">
+  <div class="logo">
+    <h1>MarketHub</h1>
+  </div>
 
-    <div class="logo">
-        <h1>MarketHub</h1>
-
-    </div>
-
-    <nav class="menu">
-        <app-button></app-button>
-        <app-button></app-button>
-    </nav>
-
+  <nav class="menu">
+    @if (true) {
+      <app-link class="md" text="Cadastro de produtos" linkRotas="/admin/tela-produtos"></app-link>
+    }
+    <app-link class="md" text="login" linkRotas="/login"></app-link>
+    <app-link text="Cadastre-se" linkRotas="/cadastro"></app-link>
+  </nav>
 </header>
