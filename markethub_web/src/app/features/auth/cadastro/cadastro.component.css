@@ -1,210 +1,214 @@
-/* Container geral do formulário */
+/* Página inteira */
 .form-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 20px;
-  background-color: #f5f5f5;
-  min-height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Card do formulário */
-.form-card {
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 500px;
-  overflow: hidden;
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-/* Header do formulário */
-.form-header {
+  min-height: 100vh; /* ocupa a tela inteira */
+  background: linear-gradient(135deg, #0f4c5c, #2a9d8f);
   padding: 20px;
-  color: #fff;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Cartão do formulário */
+.form-card {
+  width: 100%;
+  max-width: 450px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cabeçalho */
+.form-header {
   text-align: center;
+  padding: 20px;
+  background: #6a0dad; /* azul violeta */
+  color: #fff;
+}
+
+.form-header .welcome-icon {
+  font-size: 36px;
+  margin-bottom: 10px;
 }
 
 .form-header h2 {
-  margin: 10px 0 5px;
-  font-size: 1.8rem;
+  margin: 0;
+  font-size: 22px;
 }
 
 .form-header p {
-  font-size: 0.95rem;
-  color: #eee;
+  font-size: 14px;
+  margin-top: 6px;
 }
 
-/* Ícone do usuário */
-.welcome-icon {
-  font-size: 3rem;
-  margin-bottom: 5px;
-}
-
-/* Formulário */
+/* Formulário interno */
 form {
-  padding: 20px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-/* Grupos de campo */
+/* Inputs e labels */
 .form-group {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group-inline {
-  display: flex;
+  flex-direction: row;
   gap: 10px;
 }
 
 .form-label {
-  display: block;
   font-weight: 600;
   margin-bottom: 6px;
+  color: #0f4c5c;
 }
 
 .form-input {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  transition: border-color 0.3s;
+  padding: 12px;
+  border: 2px solid #0f4c5c;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s ease;
 }
 
 .form-input:focus {
-  outline: none;
-  border-color: blueviolet;
+  border-color: #2a9d8f;
+  box-shadow: 0 0 8px rgba(42, 157, 143, 0.5);
 }
 
-/* Área de upload */
+/* Upload de fotos */
 .file-upload-area {
   display: flex;
-  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .file-upload-btn {
   display: inline-block;
-  background-color: blueviolet;
+  padding: 10px 18px;
+  background: #0f4c5c;
   color: #fff;
-  padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s;
-  text-align: center;
-  font-size: 0.95rem;
+  transition: 0.3s;
 }
 
 .file-upload-btn:hover {
-  background-color: darkviolet;
+  background: #145b6d;
 }
 
-.files-preview {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-/* Checkbox customizado */
+/* Radio buttons */
 .checkbox-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .checkbox-label {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   cursor: pointer;
-  position: relative;
-  user-select: none;
-}
-
-.checkbox-input {
-  opacity: 0;
-  position: absolute;
+  font-weight: 500;
+  color: #0f4c5c;
 }
 
 .checkbox-custom {
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ccc;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #0f4c5c;
   border-radius: 4px;
-  display: inline-block;
-  transition: all 0.3s;
+  position: relative;
 }
 
-.checkbox-input:checked + .checkbox-custom {
-  background-color: blueviolet;
-  border-color: blueviolet;
+.checkbox-label input[type="radio"] {
+  display: none;
 }
 
-.checkbox-text {
-  font-size: 0.95rem;
+.checkbox-label input[type="radio"]:checked + .checkbox-custom::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 10px;
+  height: 10px;
+  background: #2a9d8f;
+  border-radius: 2px;
+}
+.checkbox-description {
+  display: block;        /* força a quebra de linha */
+  font-style: italic;    /* itálico */
+  font-weight: 400;      /* leve */
+  font-size: 13px;       /* menor que o texto principal */
+  color: #0f4c5c;       /* azul petróleo mais suave */
+  margin-top: 2px;       /* espaço entre o título e a descrição */
 }
 
-/* Erros */
-.field-error small {
-  color: red;
-  font-size: 0.85rem;
-  display: none; /* aparecer quando houver erro */
-}
 
 /* Botões */
 .form-actions {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: 12px;
+  flex-direction: column;
 }
 
 button {
-  background-color: blueviolet;
+  width: 100%;
+  padding: 14px;
+  background: #0f4c5c;
   color: #fff;
+  font-size: 16px;
+  font-weight: 600;
   border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s;
+  transition: 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+  background: #145b6d;
+}
+
+button:disabled {
+  background: #9bbec1;
+  cursor: not-allowed;
+}
+
+/* Botão secundário */
+button.form-btn.secondary {
+  background: #e0f7fa;
+  color: #0f4c5c;
+}
+
+button.form-btn.secondary:hover {
+  background: #c1e8ed;
+}
+
+/* Mensagens de erro */
+.field-error small {
+  color: #d32f2f;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Preview de imagens */
+.files-preview {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
 }
 
-button:hover {
-  background-color: darkviolet;
-}
-
-button.secondary {
-  background-color: #ccc;
-  color: #333;
-}
-
-button.secondary:hover {
-  background-color: #aaa;
-}
-
-/* Loading spinner dentro do botão */
-.loading-spinner {
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #fff;
-  border-radius: 50%;
-  width: 14px;
-  height: 14px;
-  animation: spin 1s linear infinite;
-  display: inline-block;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Animação do card */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+.files-preview img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
 }

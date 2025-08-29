@@ -1,68 +1,49 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { LoginResponse, User } from '../../shared/entities/user.entity';
 
-export type UserRole = 'USER' | 'ADM';
-
-export interface User {
-  id: number;
-  name: string;
-  role: UserRole;
-  avatarUrl?: string;
-  token?: string;
-}
-
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
+  private apiUrl = 'http://localhost:3049/api/auth';
 
-  private currentUserSignal = signal<User | null>(null);
-  currentUser = this.currentUserSignal.asReadonly();
+  // Signal para armazenar usuário logado
+  public currentUser = signal<User | null>(null);
 
-  private apiUrl = 'http://localhost:3000/auth/login';
+  constructor(private http: HttpClient, private router: Router) {}
 
-  constructor(private router: Router, private http: HttpClient) {
-    this.loadFromLocalStorage();
+  // Login
+  login(nome: string, senha: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { nome, senha })
+      .pipe(
+        tap(res => {
+          localStorage.setItem('token', res.token);
+          this.currentUser.set({
+            nome: res.nome,
+            perfil: res.perfil,
+            foto: res.foto,
+          });
+        })
+      );
   }
 
-  login(user: { name: string; password: string }) {
-    return this.http.post<User>(this.apiUrl, user).pipe(
-      tap((loggedUser) => {
-        // se backend não mandar avatar, pode definir fixo
-        loggedUser.avatarUrl = '../../../assets/OIP.png';
-
-        this.currentUserSignal.set(loggedUser);
-        localStorage.setItem('user', JSON.stringify(loggedUser));
-      })
-    );
-  }
-
+  // Logout
   logout() {
-    this.currentUserSignal.set(null);
-    localStorage.removeItem('user');
-    this.router.navigate(['/home']);
+    localStorage.removeItem('token');
+    this.currentUser.set(null);
+    this.router.navigate(['/login']);
   }
 
-  getToken(): string | null {
-    return this.currentUserSignal()?.token || null;
-  }
-
+  // Verifica se o usuário está logado
   isLoggedIn(): boolean {
-    return !!this.currentUserSignal();
+    return !!localStorage.getItem('token');
   }
 
-  isAdmin(): boolean {
-    return this.currentUserSignal()?.role === 'ADM';
-  }
-
-  isUser(): boolean {
-    return this.currentUserSignal()?.role === 'USER';
-  }
-
-  private loadFromLocalStorage() {
-    const stored = localStorage.getItem('user');
-    if (stored) {
-      this.currentUserSignal.set(JSON.parse(stored));
-    }
+  // Retorna token do usuário logado
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 }

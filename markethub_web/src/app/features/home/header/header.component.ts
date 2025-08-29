@@ -1,14 +1,23 @@
-import { Component } from '@angular/core';
-import { LinkComponent } from '../../../shared/components/link/link.component';
+import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { LinkComponent } from "../../../shared/components/link/link.component";
+
 
 @Component({
   selector: 'app-header',
-  imports: [LinkComponent],
+  standalone: true,
+  imports: [CommonModule, LinkComponent],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css',
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
+  authService = inject(AuthService);
+  router = inject(Router);
 
-  constructor(public authService:AuthService){}
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }

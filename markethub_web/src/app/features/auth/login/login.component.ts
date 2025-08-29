@@ -1,35 +1,60 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../../../core/services/auth.service';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { AuthService } from '../../../core/services/auth.service';
+import { LoginResponse } from '../../../shared/entities/user.entity';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
+  loading = false;
 
-  fb = inject(FormBuilder);
-  auth = inject(AuthService);
-  router= inject(Router);
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
-  formLogin = this.fb.group({
-    nome: [''],
-    password: [''],
-  })
+  // Formulário de login
+  loginForm = this.fb.group({
+    nome: ['', [Validators.required, Validators.email]],
+    senha: ['', [Validators.required, Validators.minLength(6)]],
+  });
 
   onSubmit() {
-    this.auth.login(this.formLogin.value as any).subscribe({
-      next: () => {
-        this.router.navigate(['/home'])
-      }, error: (e) => {
-          alert(`Login ou senha inválidos\n Erro: ${e.error.message}`)
-      }
-    })
+    if (this.loginForm.invalid) return;
+
+    this.loading = true;
+
+    const { nome, senha } = this.loginForm.value;
+
+    this.authService.login(nome!, senha!).subscribe({
+      next: (res: LoginResponse) => {
+        alert('✅ Login realizado com sucesso!');
+        console.log('response no login component', res);
+
+        if (res.perfil === 'VENDEDOR') {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.router.navigate(['/home']);
+        }
+      },
+      error: (err) => {
+        alert(err.error?.message || '❌ Erro no login');
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
   }
 
-
+  limparFormulario() {
+    this.loginForm.reset();
+    this.loading = false;
+  }
 }

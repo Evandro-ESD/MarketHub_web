@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { AdminGuard } from '../../core/guards/admin.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RelatoriosComponent } from './relatorios/relatorios.component';
 import { TelaProdutosComponent } from './tela-produtos/tela-produtos.component';

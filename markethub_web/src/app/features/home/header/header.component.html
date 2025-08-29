@@ -4,19 +4,28 @@
   </div>
 
   <nav class="menu">
-    @if (!authService.isAdmin()) {
-      <app-link class="md" text="Cadastro de produtos" linkRotas="/admin/tela-produtos"></app-link>
-    }
-    <app-link class="md" text="login" linkRotas="/login"></app-link>
+    <!-- Menu principal -->
+    <app-link class="md" text="Login" linkRotas="/login"></app-link>
     <app-link text="Cadastre-se" linkRotas="/cadastro"></app-link>
 
-    <!-- Info usuário -->
-     @if(authService.isLoggedIn()){}
-      <span >
-        <!-- implementar caminho da imagem do usuário -->
-        <img [src]="authService.currentUser()?.avatarUrl" class="avatar">
-        {{ authService.currentUser()?.name }}
-        <button (click)="authService.logout()">Logout</button>
+    @if (!authService.isLoggedIn()) {
+      @if (authService.currentUser()?.perfil === 'VENDEDOR') {
+      <app-link
+        class="md"
+        text="Cadastro de produtos"
+        linkRotas="/admin/tela-produtos">
+      </app-link>
+    }
+      <!-- Info do usuário -->
+      <span class="user-info">
+        <img
+          class="avatar"
+          [src]="authService.currentUser()?.foto || 'assets/img/default-avatar.png'"
+          alt="avatar do usuário"
+        />
+        <span class="username">{{ authService.currentUser()?.nome }}</span>
+        <button class="logout-btn" (click)="logout()">Sair</button>
       </span>
+    }
   </nav>
 </header>
