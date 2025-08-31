@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
-import { LinkComponent } from "../../../shared/components/link/link.component";
-
+import { LinkComponent } from '../../../shared/components/link/link.component';
 
 @Component({
   selector: 'app-header',
@@ -18,6 +17,10 @@ export class HeaderComponent {
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
+  }
+
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = 'assets/default-avatar.png';
   }
 }

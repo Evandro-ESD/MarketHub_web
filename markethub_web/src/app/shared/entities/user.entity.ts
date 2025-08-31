@@ -13,6 +13,6 @@ export interface LoginResponse {
   token: string;
   perfil: 'VENDEDOR' | 'COMPRADOR';
   nome: string;
-  email?: string;  // se o backend mandar
+  // email?: string;  // se o backend mandar
   foto?: string;
 }
