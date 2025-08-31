@@ -22,12 +22,15 @@ export class CadastroComponent {
   formCadastro = this.fb.group({
     nome: ['', [Validators.required, Validators.minLength(3)]],
     senha: ['', [Validators.required, Validators.minLength(6)]],
-    perfil: ['', Validators.required],
-    foto: [''],
+    foto: [null],
+    perfil: ['COMPRADOR', Validators.required],
   });
 
   cadastrar() {
-    if (this.formCadastro.invalid) return;
+    if (this.formCadastro.invalid) {
+      this.formCadastro.markAllAsTouched();
+      return;
+    }
 
     this.loading = true;
 
@@ -45,6 +48,7 @@ export class CadastroComponent {
       },
       complete: () => {
         this.loading = false;
+        this.router.navigate(['/login'])
       },
     });
   }

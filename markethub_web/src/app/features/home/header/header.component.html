@@ -25,7 +25,9 @@
         alt="avatar do usuário"
       /> -->
 
-      <img class="avatar" [src]="currentUserFoto()" alt="avatar do usuário" />
+      <!-- <img class="avatar" [src]="currentUserFoto()" alt="avatar do usuário" /> -->
+
+      <img src="assets/img/default-avatar.png">
       <span class="username">{{ currentUserNome() }}</span>
       <button class="logout-btn" (click)="logout()">Logout</button>
     </span>

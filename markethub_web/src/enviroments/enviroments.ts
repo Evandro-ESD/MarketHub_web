@@ -8,7 +8,7 @@ export const environment = {
   production: false,
   apiBaseUrl: 'http://localhost:3049/api', // base da API
    assets: {
-    defaultAvatar: 'assets/img/default-avatar.png'
+    defaultAvatar: '/assets/img/default-avatar.png'
   },
   endpoints: {
     users: '/users',
