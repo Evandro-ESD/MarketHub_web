@@ -18,15 +18,6 @@
       }
     </div>
 
-    <!-- Navegação por Miniaturas (Thumbnails) -->
-    <div class="thumbnail-container">
-      @for (produto of produtosExibidos; track produto.id; let i = $index) {
-        <div class="thumbnail" [class.active]="i === selectedIndex" (click)="selecionarProduto(i)">
-          <img [src]="produto.imageUrl" [alt]="'Miniatura de ' + produto.titulo">
-        </div>
-      }
-    </div>
-
     <!-- Botões de Navegação (Opcional, mas bom para usabilidade) -->
     @if (produtosExibidos.length > 1) {
       <button class="nav-button prev" (click)="anterior()">&#10094;</button>
