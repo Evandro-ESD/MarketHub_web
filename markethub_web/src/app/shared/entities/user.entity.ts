@@ -10,9 +10,10 @@ export interface User {
 
 // Resposta do login
 export interface LoginResponse {
+  id_usuario?: number; // **
   token: string;
   perfil: 'VENDEDOR' | 'COMPRADOR';
   nome: string;
-  email?: string;  // se o backend mandar
+  // email?: string;  // se o backend mandar
   foto?: string;
 }

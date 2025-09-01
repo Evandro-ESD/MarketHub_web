@@ -1,14 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { LoginResponse } from '../../../shared/entities/user.entity';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
@@ -21,7 +20,7 @@ export class LoginComponent {
 
   // Formulário de login
   loginForm = this.fb.group({
-    nome: ['', [Validators.required, Validators.email]],
+    nome: ['', [Validators.required]],
     senha: ['', [Validators.required, Validators.minLength(6)]],
   });
 
@@ -34,7 +33,7 @@ export class LoginComponent {
 
     this.authService.login(nome!, senha!).subscribe({
       next: (res: LoginResponse) => {
-        alert('✅ Login realizado com sucesso!');
+        alert('Login realizado com sucesso!');
         console.log('response no login component', res);
 
         if (res.perfil === 'VENDEDOR') {
@@ -44,7 +43,7 @@ export class LoginComponent {
         }
       },
       error: (err) => {
-        alert(err.error?.message || '❌ Erro no login');
+        alert(err.error?.message || 'Erro no login');
         this.loading = false;
       },
       complete: () => {

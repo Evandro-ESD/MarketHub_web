@@ -21,8 +21,9 @@
           required
         />
         <div class="field-error">
-          @if (formCadastro.get('nome')?.invalid && formCadastro.get('nome')?.touched) {
-            <small>Nome é obrigatório e deve ter pelo menos 3 caracteres</small>
+          @if (formCadastro.get('nome')?.invalid &&
+          formCadastro.get('nome')?.touched) {
+          <small>Nome é obrigatório e deve ter pelo menos 3 caracteres</small>
           }
         </div>
       </div>
@@ -40,8 +41,9 @@
           required
         />
         <div class="field-error">
-          @if (formCadastro.get('senha')?.invalid && formCadastro.get('senha')?.touched) {
-            <small>Senha é obrigatória e deve ter pelo menos 6 caracteres</small>
+          @if (formCadastro.get('senha')?.invalid &&
+          formCadastro.get('senha')?.touched) {
+          <small>Senha é obrigatória e deve ter pelo menos 6 caracteres</small>
           }
         </div>
       </div>
@@ -67,13 +69,20 @@
       <!-- Tipo de usuário -->
       <div class="form-group">
         <label class="form-label required">Tipo de usuário</label>
-        <div class="checkbox-group">
+
+        <div
+          class="checkbox-group"
+          [class.invalid]="
+            formCadastro.get('perfil')?.invalid &&
+            formCadastro.get('perfil')?.touched
+          "
+        >
           <label class="checkbox-label">
             <input
               type="radio"
               name="perfil"
               formControlName="perfil"
-              value="comum"
+              value="COMPRADOR"
             />
             <span class="checkbox-custom"></span>
             <span class="checkbox-text">Usuário comum</span>
@@ -84,7 +93,7 @@
               type="radio"
               name="perfil"
               formControlName="perfil"
-              value="vendedor"
+              value="VENDEDOR"
             />
             <span class="checkbox-custom"></span>
             <span class="checkbox-text">
@@ -95,9 +104,11 @@
             </span>
           </label>
         </div>
+
         <div class="field-error">
-          @if (formCadastro.get('perfil')?.invalid && formCadastro.get('perfil')?.touched) {
-            <small>Você deve escolher um tipo de usuário</small>
+          @if (formCadastro.get('perfil')?.invalid &&
+          formCadastro.get('perfil')?.touched) {
+          <small>Você deve escolher um tipo de usuário</small>
           }
         </div>
       </div>
@@ -107,14 +118,18 @@
         <button type="submit">
           <span>Cadastrar Usuário</span>
           @if (loading) {
-            <span>
-              <i class="loading-spinner"></i>
-              Cadastrando...
-            </span>
+          <span>
+            <i class="loading-spinner"></i>
+            Cadastrando...
+          </span>
           }
         </button>
 
-        <button type="button" class="form-btn secondary" (click)="limparFormulario()">
+        <button
+          type="button"
+          class="form-btn secondary"
+          (click)="limparFormulario()"
+        >
           <span>Limpar Formulário</span>
         </button>
       </div>

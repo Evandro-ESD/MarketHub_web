@@ -1,116 +1,79 @@
-/* .header{
-    width: 100%;
-    background-color: rgba(255, 255, 0, 0.665);
-    height: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-}
-
-.menu{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;} */
-
-/* Header geral */
+/* Container do header */
 .header {
-    width: 100%;
-    background-color: rgba(255, 255, 0, 0.665);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #6a11cb; /* Roxo degradê pode ser adicionado via linear-gradient */
+  color: #fff;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 /* Logo */
-.logo h1 {
-    margin: 0;
-    font-size: 1.8rem;
-    color: #333;
-    font-weight: bold;
+.header .logo h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+  cursor: pointer;
 }
 
 /* Menu de navegação */
-.menu {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+.header .menu {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-/* Links padrão do menu */
-.menu app-link {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    padding: 6px 12px;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
-    cursor: pointer;
+/* Links do menu */
+.header .menu app-link {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  transition: color 0.3s;
 }
 
-.menu app-link:hover {
-    background-color: rgba(255,255,255,0.7);
-    color: #000;
+.header .menu app-link:hover {
+  color: #ffd700; /* Dourado ao passar o mouse */
 }
 
-/* Seção de usuário */
-.menu span {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: rgba(255,255,255,0.3);
-    padding: 5px 10px;
-    border-radius: 8px;
+/* Informação do usuário */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 20px;
 }
 
 /* Avatar do usuário */
-.avatar {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #fff;
-    background-color: #000;
+.user-info .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+/* Nome do usuário */
+.user-info .username {
+  font-weight: 500;
+  font-size: 14px;
 }
 
 /* Botão de logout */
-.menu span button {
-    /* background-color: #ff4d4f; */
-    color: #007bff;;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.logout-btn {
+  background-color: #ff4b5c;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.3s;
 }
 
-/* .menu span button:hover {
-    background-color: #d9363e;
-} */
-
-/* Responsividade simples */
-@media (max-width: 768px) {
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-
-    .menu {
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
-    }
-
-    .menu span {
-        width: 100%;
-        justify-content: flex-start;
-    }
+.logout-btn:hover {
+  background-color: #ff1e2d;
 }
-
-

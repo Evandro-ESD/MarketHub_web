@@ -5,27 +5,31 @@
 
   <nav class="menu">
     <!-- Menu principal -->
+    @if(!user){
     <app-link class="md" text="Login" linkRotas="/login"></app-link>
     <app-link text="Cadastre-se" linkRotas="/cadastro"></app-link>
 
-    @if (!authService.isLoggedIn()) {
-      @if (authService.currentUser()?.perfil === 'VENDEDOR') {
-      <app-link
-        class="md"
-        text="Cadastro de produtos"
-        linkRotas="/admin/tela-produtos">
-      </app-link>
+    } @else { @if (user.perfil === 'VENDEDOR') {
+    <app-link
+      class="md"
+      text="Cadastro de produtos"
+      linkRotas="/admin/tela-produtos"
+    >
+    </app-link>
     }
-      <!-- Info do usuário -->
-      <span class="user-info">
-        <img
-          class="avatar"
-          [src]="authService.currentUser()?.foto || 'assets/img/default-avatar.png'"
-          alt="avatar do usuário"
-        />
-        <span class="username">{{ authService.currentUser()?.nome }}</span>
-        <button class="logout-btn" (click)="logout()">Sair</button>
-      </span>
+    <!-- Info do usuário -->
+    <span class="user-info">
+      <!-- <img
+        [src]="user.foto || 'assets/default-avatar.png'"
+        alt="Avatar"
+        width="40"
+        height="40"
+      /> -->
+      <img src="assets/default-avatar.png" alt="">
+
+      <span class="username">{{ user.nome }}</span>
+      <button class="logout-btn" (click)="logout()">Logout</button>
+    </span>
     }
   </nav>
 </header>
