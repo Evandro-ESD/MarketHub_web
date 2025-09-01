@@ -52,8 +52,8 @@ export class TelaProdutosComponent implements OnInit {
     const formData = new FormData();
     formData.append('nome_produto', this.formProduto.get('nome_produto')?.value);
     formData.append('descricao', this.formProduto.get('descricao')?.value);
-    formData.append('preco', parseFloat(this.formProduto.get('preco')?.value).toString());
-    formData.append('estoque', parseInt(this.formProduto.get('estoque')?.value, 10).toString());
+    formData.append('preco', this.formProduto.get('preco')?.value);
+    formData.append('estoque', this.formProduto.get('estoque')?.value);
 
     const foto = this.formProduto.get('foto')?.value;
     if (foto) {
