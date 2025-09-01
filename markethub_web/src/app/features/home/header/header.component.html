@@ -5,11 +5,11 @@
 
   <nav class="menu">
     <!-- Menu principal -->
-    @if(!authService.isLoggedIn()){
+    @if(!user){
     <app-link class="md" text="Login" linkRotas="/login"></app-link>
     <app-link text="Cadastre-se" linkRotas="/cadastro"></app-link>
 
-    } @else { @if (authService.currentUser()?.perfil === 'VENDEDOR') {
+    } @else { @if (user.perfil === 'VENDEDOR') {
     <app-link
       class="md"
       text="Cadastro de produtos"
@@ -20,15 +20,14 @@
     <!-- Info do usuário -->
     <span class="user-info">
       <!-- <img
-        [src]="authService.currentUser()?.foto"
-        [appFallbackImg]="'assets/default-avatar.png'"
-        alt="avatar do usuário"
+        [src]="user.foto || 'assets/default-avatar.png'"
+        alt="Avatar"
+        width="40"
+        height="40"
       /> -->
+      <img src="assets/default-avatar.png" alt="">
 
-      <!-- <img class="avatar" [src]="currentUserFoto()" alt="avatar do usuário" /> -->
-
-      <img src="assets/img/default-avatar.png">
-      <span class="username">{{ currentUserNome() }}</span>
+      <span class="username">{{ user.nome }}</span>
       <button class="logout-btn" (click)="logout()">Logout</button>
     </span>
     }

@@ -10,6 +10,7 @@ export interface User {
 
 // Resposta do login
 export interface LoginResponse {
+  id_usuario?: number; // **
   token: string;
   perfil: 'VENDEDOR' | 'COMPRADOR';
   nome: string;

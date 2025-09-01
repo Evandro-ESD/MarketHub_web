@@ -7,7 +7,6 @@ import { LoginResponse } from '../../../shared/entities/user.entity';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
@@ -34,7 +33,7 @@ export class LoginComponent {
 
     this.authService.login(nome!, senha!).subscribe({
       next: (res: LoginResponse) => {
-        alert('✅ Login realizado com sucesso!');
+        alert('Login realizado com sucesso!');
         console.log('response no login component', res);
 
         if (res.perfil === 'VENDEDOR') {
@@ -44,7 +43,7 @@ export class LoginComponent {
         }
       },
       error: (err) => {
-        alert(err.error?.message || '❌ Erro no login');
+        alert(err.error?.message || 'Erro no login');
         this.loading = false;
       },
       complete: () => {
