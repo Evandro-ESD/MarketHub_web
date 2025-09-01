@@ -7,7 +7,7 @@
     <!-- Menu principal -->
     @if(!user){
     <app-link class="md" text="Login" linkRotas="/login"></app-link>
-    <app-link text="Cadastre-se" linkRotas="/cadastro"></app-link>
+    <app-link class="md" text="Cadastre-se" linkRotas="/cadastro"></app-link>
 
     } @else { @if (user.perfil === 'VENDEDOR') {
     <app-link
@@ -25,7 +25,7 @@
         width="40"
         height="40"
       /> -->
-      <img src="assets/default-avatar.png" alt="">
+      <!-- <img src="assets/default-avatar.png" alt=""> -->
 
       <span class="username">{{ user.nome }}</span>
       <button class="logout-btn" (click)="logout()">Logout</button>
