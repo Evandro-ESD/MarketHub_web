@@ -1,0 +1,90 @@
+.footer {
+  background-color: var(--ml-azul); /* Fundo azul escuro */
+  color: var(--ml-branco); /* Texto branco para contraste */
+  padding: 40px 20px;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.footer-about, .footer-links {
+  margin-bottom: 20px;
+}
+
+.footer-about h4, .footer-links h4 {
+  color: var(--ml-branco);
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.footer-about h4::after, .footer-links h4::after {
+  background-color: var(--ml-amarelo); /* Linha de destaque amarela */
+}
+
+.footer-about p {
+  color: var(--ml-cinza-medio);
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links ul li a {
+  color: var(--ml-branco);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links ul li a:hover {
+  color: var(--ml-amarelo); /* Destaque amarelo ao passar o mouse */
+}
+
+/* Estilos para os ícones de redes sociais */
+.social-icons a {
+  color: var(--ml-branco);
+  font-size: 24px;
+  margin-right: 15px;
+  transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: var(--ml-amarelo); /* Destaque amarelo no hover */
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ml-cinza-medio);
+  width: 100%;
+}
+
+.footer-bottom p {
+  color: var(--ml-cinza-medio);
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+@media (min-width: 768px) {
+  .footer-container {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}

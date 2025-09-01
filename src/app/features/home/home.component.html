@@ -3,11 +3,19 @@
     <!-- main -->
     <div class="main">
         <div class="container-carousel">
-            <app-carousel></app-carousel>
+            <app-carousel [produtos]="produtos" [limite]="5"
+                (adicionarAoCarrinho)="aoAdicionarProdutoAoCarrinho($event)">
+            </app-carousel>
         </div>
 
-        <div class="produtos">
-            <p>Cards de Produtos</p>
+        <div class="produtos-container">
+            <h2 class="produtos-titulo">Nossos Produtos</h2>
+            <div class="produtos-grid">
+                @for (produto of produtos; track produto.id) {
+                <app-card [imageUrl]="produto.imageUrl" [titulo]="produto.titulo" [descricao]="produto.descricao"
+                    [preco]="produto.preco" (adicionarAoCarrinho)="aoAdicionarProdutoAoCarrinho(produto)" />
+                }
+            </div>
         </div>
 
     </div>

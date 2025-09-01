@@ -1,15 +1,26 @@
-// import { Injectable, inject } from '@angular/core';
-// import { CanActivate, Router } from '@angular/router';
-// import { AuthService } from '../services/auth.service';
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
-// @Injectable({ providedIn: 'root' })
-// export class AdminGuard implements CanActivate {
-//   private auth = inject(AuthService);
-//   private router = inject(Router);
+@Injectable({ providedIn: 'root' })
+export class AuthGuard implements CanActivate {
+  constructor(private authService: AuthService, private router: Router) {}
 
-//   canActivate(): boolean {
-//     if (this.auth.isAdmin()) return true;
-//     this.router.navigate(['/']);
-//     return false;
-//   }
-// }
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    const expectedPerfil = route.data['perfil'] as 'VENDEDOR' | 'COMPRADOR';
+    const user = this.authService.currentUser();
+
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+      return false;
+    }
+
+    if (expectedPerfil && user?.perfil !== expectedPerfil) {
+      alert('Acesso negado!');
+      this.router.navigate(['/home']);
+      return false;
+    }
+
+    return true;
+  }
+}

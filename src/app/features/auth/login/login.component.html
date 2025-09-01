@@ -1,14 +1,26 @@
-<p>
+<div class="login-page">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-container">
+    <h2>Entrar</h2>
 
-// Para logar como ADM
-authService.login email: 'admin@email.com',
-password: '123' ,
-'fake-jwt-token', 'ADM';
+    <div class="form-group">
+      <label>Nome</label>
+      <input
+        formControlName="nome"
+        type="text"
+        placeholder="Nome sem espaços. Ex: JohnConnor"
+      />
+    </div>
 
-// Para logar como USER
-authService.login
-email: 'user@email.com', password: '123' ,
-'fake-jwt-token', 'USER';
+    <div class="form-group">
+      <label>Senha</label>
+      <input formControlName="senha" type="password" placeholder="Senha" />
+    </div>
 
+    <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
 
-</p>
+    <div class="links">
+      <a routerLink="/cadastro">Cadastre-se</a>
+      <a routerLink="home">Voltar à Home</a>
+    </div>
+  </form>
+</div>

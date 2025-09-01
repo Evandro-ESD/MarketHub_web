@@ -1,1 +1,69 @@
-<p>tela-produtos works!</p>
+<form [formGroup]="formProduto" (ngSubmit)="submit()" class="form-produto">
+  <div class="form-group">
+    <label>Nome do Produto</label>
+    <input formControlName="nome_produto" type="text" />
+    @if(formProduto.get('nome_produto')?.touched &&
+    formProduto.get('nome_produto')?.invalid){
+    <div class="error">
+      @if(formProduto.get('nome_produto')?.errors?.['required']){
+      <small>Nome obrigatório.</small>
+      } @if(formProduto.get('nome_produto')?.errors?.['minlength']){
+      <small>Mínimo 3 caracteres.</small>
+      }
+    </div>
+    }
+  </div>
+
+  <div class="form-group">
+    <label>Descrição</label>
+    <textarea formControlName="descricao"></textarea>
+    @if(formProduto.get('descricao')?.touched &&
+    formProduto.get('descricao')?.invalid){
+    <div class="error">
+      <small>Descrição obrigatória.</small>
+    </div>
+    }
+  </div>
+
+  <div class="form-group">
+    <label>Preço</label>
+    <input formControlName="preco" type="number" step="0.01" />
+    @if(formProduto.get('preco')?.touched && formProduto.get('preco')?.invalid){
+    <div class="error">
+      <small>Informe um preço válido.</small>
+    </div>
+    }
+  </div>
+
+  <div class="form-group">
+    <label>Estoque</label>
+    <input formControlName="estoque" type="number" />
+    @if(formProduto.get('estoque')?.touched &&
+    formProduto.get('estoque')?.invalid){
+    <div class="error">
+      <small>Informe o estoque.</small>
+    </div>
+    }
+  </div>
+
+  <!-- Imagem -->
+ <div class="form-group">
+  <label for="foto">Imagem</label>
+  <input
+    type="file"
+    id="foto"
+    (change)="onFileChange($event)"
+    accept=".jpg,.jpeg,.png,.gif"
+    />
+
+    @if(formProduto.get('foto')?.touched && formProduto.get('foto')?.invalid){
+    <div class="error">
+      <small>Selecione uma imagem válida.</small>
+    </div>
+    }
+  </div>
+
+  <button type="submit" [disabled]="formProduto.invalid">
+    Cadastrar Produto
+  </button>
+</form>

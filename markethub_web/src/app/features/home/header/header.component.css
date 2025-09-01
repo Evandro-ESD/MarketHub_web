@@ -1,0 +1,79 @@
+/* Container do header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #6a11cb; /* Roxo degradê pode ser adicionado via linear-gradient */
+  color: #fff;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Logo */
+.header .logo h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Menu de navegação */
+.header .menu {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Links do menu */
+.header .menu app-link {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.header .menu app-link:hover {
+  color: #ffd700; /* Dourado ao passar o mouse */
+}
+
+/* Informação do usuário */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 20px;
+}
+
+/* Avatar do usuário */
+.user-info .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+/* Nome do usuário */
+.user-info .username {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* Botão de logout */
+.logout-btn {
+  background-color: #ff4b5c;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #ff1e2d;
+}

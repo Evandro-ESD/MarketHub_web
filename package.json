@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "markethub-web",
   "version": "0.0.0",
   "scripts": {
@@ -17,6 +18,7 @@
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
+    "jwt-decode": "^4.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
@@ -33,5 +35,9 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.7.2"
+=======
+  "dependencies": {
+    "jwt-decode": "^4.0.0"
+>>>>>>> c16f13adf391c18d188462d3d4c5808f5ca9f28f
   }
 }

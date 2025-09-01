@@ -1,67 +1,83 @@
-import { Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-
-export type UserRole = 'USER' | 'ADM';
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: UserRole;
-  avatarUrl?: string;
-  token?: string;
-}
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { environment } from '../../../enviroments/enviroments';
+import { LoginResponse, User } from '../../shared/entities/user.entity';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private apiUrl = `${environment.apiBaseUrl}/auth`;
 
-  private currentUserSignal = signal<User | null>(null);
-  currentUser = this.currentUserSignal.asReadonly();
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private router: Router) {
-    this.loadFromLocalStorage();
+  constructor(private http: HttpClient, private router: Router) {
+    this.loadUserFromToken();
   }
 
-  login(user: { email: string; password: string }, token: string, role: UserRole) {
-    const loggedUser: User = {
-      id: 1,
-      name: role === 'ADM' ? 'Administrador' : 'Usuário Comum',
-      email: user.email,
-      role,
-      // avatarUrl: `https://i.pravatar.cc/150?u=${user.email}`,
-      avatarUrl: '../../../assets/OIP.png',
-      token
-    };
-    this.currentUserSignal.set(loggedUser);
-    localStorage.setItem('user', JSON.stringify(loggedUser));
+  private loadUserFromToken() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const payload: any = JSON.parse(atob(token.split('.')[1]));
+        const user: User = {
+          id_usuario: payload.id_usuario,
+          nome: payload.nome,
+          perfil: payload.perfil,
+          foto: payload.foto
+            ? `${environment.apiBaseUrl}${payload.foto}`
+            : environment.assets.defaultAvatar,
+          authtoken: token
+        };
+        this.currentUserSubject.next(user);
+      } catch (err) {
+        console.warn('Token inválido', err);
+        this.logout();
+      }
+    }
+  }
+
+  login(nome: string, senha: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { nome, senha }).pipe(
+      tap(res => {
+        localStorage.setItem('token', res.token);
+        const user: User = {
+          id_usuario: res.id_usuario,
+          nome: res.nome,
+          perfil: res.perfil,
+          foto: res.foto
+            ? `${environment.apiBaseUrl}${res.foto}`
+            : environment.assets.defaultAvatar,
+          authtoken: res.token
+        };
+        this.currentUserSubject.next(user);
+      })
+    );
   }
 
   logout() {
-    this.currentUserSignal.set(null);
-    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    this.currentUserSubject.next(null);
     this.router.navigate(['/login']);
   }
 
-  getToken(): string | null {
-    return this.currentUserSignal()?.token || null;
-  }
-
   isLoggedIn(): boolean {
-    return !!this.currentUserSignal();
+    return !!localStorage.getItem('token');
   }
 
-  isAdmin(): boolean {
-    return this.currentUserSignal()?.role === 'ADM';
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 
-  isUser(): boolean {
-    return this.currentUserSignal()?.role === 'USER';
+  getCurrentUser(): User | null {
+    return this.currentUserSubject.value;
   }
 
-  private loadFromLocalStorage() {
-    const stored = localStorage.getItem('user');
-    if (stored) {
-      this.currentUserSignal.set(JSON.parse(stored));
+  updateCurrentUser(user: Partial<User>) {
+    const current = this.currentUserSubject.value;
+    if (current) {
+      this.currentUserSubject.next({ ...current, ...user });
     }
   }
 }
