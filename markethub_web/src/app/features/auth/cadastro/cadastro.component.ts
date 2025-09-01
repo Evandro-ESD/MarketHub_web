@@ -36,6 +36,8 @@ export class CadastroComponent {
 
     const user: User = this.formCadastro.value as User;
 
+    console.log("USER no cadastro component: ",user)
+
     this.cadastroService.cadastrarUsuario(user).subscribe({
       next: (response) => {
         alert('✅ Cadastro realizado com sucesso!');

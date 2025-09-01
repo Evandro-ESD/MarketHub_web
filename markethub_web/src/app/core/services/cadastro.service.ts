@@ -8,11 +8,12 @@ import { User } from '../../shared/entities/user.entity';
   providedIn: 'root',
 })
 export class CadastroService {
-  private apiUrl = environment.endpoints.produtos;
+  private apiUrl = environment.apiBaseUrl + environment.endpoints.users; 
   private http = inject(HttpClient);
 
   // Cadastro de usuário
   cadastrarUsuario(user: User): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, user);
+    console.log("NO Cadastro de usuários caminho", this.apiUrl);
+    return this.http.post(this.apiUrl, user);
   }
 }
