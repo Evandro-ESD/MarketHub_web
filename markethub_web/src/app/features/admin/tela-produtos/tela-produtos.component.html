@@ -1,8 +1,4 @@
-<form
-  [formGroup]="formProduto"
-  (ngSubmit)="cadastrarProduto()"
-  class="form-produto"
->
+<form [formGroup]="formProduto" (ngSubmit)="cadastrarProduto()" class="form-produto">
   <div class="form-group">
     <label>Nome do Produto</label>
     <input formControlName="nome_produto" type="text" />
@@ -50,13 +46,16 @@
     }
   </div>
 
+  <!-- Imagem -->
   <div class="form-group">
     <label>Imagem</label>
-    <input
-      type="file"
-      (change)="onFileChange($event)"
-      accept=".jpg,.jpeg,.png,.gif"
-    />
+    <input type="file" (change)="onFileChange($event)" accept=".jpg,.jpeg,.png,.gif" formControlName="foto" />
+
+    @if(formProduto.get('foto')?.touched && formProduto.get('foto')?.invalid){
+    <div class="error">
+      <small>Selecione uma imagem válida.</small>
+    </div>
+    }
   </div>
 
   <button type="submit" [disabled]="formProduto.invalid">

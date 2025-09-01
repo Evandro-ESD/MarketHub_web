@@ -1,11 +1,11 @@
-// core/services/produto.service.ts
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../enviroments/enviroments';
 
 @Injectable({ providedIn: 'root' })
 export class ProdutoService {
-  private apiUrl = 'http://localhost:3049/api/produtos';
+  private apiUrl = `${environment.apiBaseUrl}${environment.endpoints.produtos}`;
 
   constructor(private http: HttpClient) {}
 
@@ -13,7 +13,7 @@ export class ProdutoService {
     return this.http.get<any[]>(this.apiUrl);
   }
 
-  cadastrarProduto(produto: any): Observable<any> {
+  cadastrarProduto(produto: FormData): Observable<any> {
     return this.http.post(this.apiUrl, produto);
   }
 
