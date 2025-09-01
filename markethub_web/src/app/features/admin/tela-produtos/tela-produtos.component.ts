@@ -16,17 +16,17 @@ export class TelaProdutosComponent implements OnInit {
     private fb: FormBuilder,
     private produtoService: ProdutoService,
     private auth: AuthService
-  ) {}
+  ) { }
 
   ngOnInit() {
     // Inicializa o formulário
     this.formProduto = this.fb.group({
       nome_produto: ['', [Validators.required, Validators.minLength(3)]],
       descricao: ['', Validators.required],
-      preco: ['', [Validators.required, Validators.min(0.01)]],
+      preco: [0, [Validators.required, Validators.min(0.01)]],
       estoque: [0, [Validators.required, Validators.min(0)]],
-      foto: [null],         // Campo de arquivo
-      id_vendedor: [null]   // Será preenchido depois
+      foto: [null],
+      id_vendedor: [null]
     });
 
     // Atualiza id_vendedor quando o usuário logado estiver disponível
@@ -47,29 +47,39 @@ export class TelaProdutosComponent implements OnInit {
 
   // Envia para o backend
   submit() {
-  if (this.formProduto.invalid) return;
+    if (this.formProduto.invalid) return;
 
-  const formData = new FormData();
-  formData.append('nome_produto', this.formProduto.get('nome_produto')?.value);
-  formData.append('descricao', this.formProduto.get('descricao')?.value);
-  formData.append('preco', this.formProduto.get('preco')?.value);
-  formData.append('estoque', this.formProduto.get('estoque')?.value);
+    const formData = new FormData();
+    formData.append('nome_produto', this.formProduto.get('nome_produto')?.value);
+    formData.append('descricao', this.formProduto.get('descricao')?.value);
+    formData.append('preco', parseFloat(this.formProduto.get('preco')?.value).toString());
+    formData.append('estoque', parseInt(this.formProduto.get('estoque')?.value, 10).toString());
 
-  const foto = this.formProduto.get('foto')?.value;
-  if (foto) {
-    formData.append('foto', foto);
-  }
-
-  this.produtoService.createProduto(formData).subscribe({
-    next: (res) => {
-      console.log('Produto cadastrado com sucesso!', res);
-      this.formProduto.reset();
-      alert("produto cadastrado com sucesso!")
-    },
-    error: (err) => {
-      console.error('Erro ao cadastrar produto!', err);
+    const foto = this.formProduto.get('foto')?.value;
+    if (foto) {
+      formData.append('foto', foto);
     }
-  });
-}
+
+
+    console.log("formData: no tela ts: ", formData.values)
+
+
+    this.produtoService.createProduto(formData).subscribe({
+      next: (res) => {
+        console.log('Produto cadastrado com sucesso!', res);
+        this.formProduto.reset();
+
+        // Limpar input de arquivo fisicamente
+        const fileInput = document.getElementById('foto') as HTMLInputElement;
+        if (fileInput) {
+          fileInput.value = '';
+        }
+        alert("produto cadastrado com sucesso!")
+      },
+      error: (err) => {
+        console.error('Erro ao cadastrar produto!', err);
+      }
+    });
+  }
 
 }

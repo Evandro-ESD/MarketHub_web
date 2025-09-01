@@ -47,9 +47,14 @@
   </div>
 
   <!-- Imagem -->
-  <div class="form-group">
-    <label>Imagem</label>
-    <input type="file" (change)="onFileChange($event)" accept=".jpg,.jpeg,.png,.gif" formControlName="foto" />
+ <div class="form-group">
+  <label for="foto">Imagem</label>
+  <input
+    type="file"
+    id="foto"
+    (change)="onFileChange($event)"
+    accept=".jpg,.jpeg,.png,.gif"
+    />
 
     @if(formProduto.get('foto')?.touched && formProduto.get('foto')?.invalid){
     <div class="error">
