@@ -1,9 +1,11 @@
 <div class="card">
-  <img src="https://picsum.photos/300/200?random=1" alt="Product Image" class="card-image">
+  <!-- Usamos property binding [src] para a imagem e interpolação {{}} para os textos -->
+  <img [src]="imageUrl" alt="Imagem de {{ titulo }}" class="card-image">
   <div class="card-content">
-    <h3 class="card-title">Nome do Produto</h3>
-    <p class="card-description">Descrição do Produto</p>
-    <p class="card-price">R$99.99</p>
-    <button class="add-to-cart-button">Comprar</button>
+    <h3 class="card-title">{{ titulo }}</h3>
+    <p class="card-description">{{ descricao }}</p>
+    <!-- O pipe 'currency' formata o número como moeda brasileira (BRL) -->
+    <p class="card-price">{{ preco | currency:'BRL' }}</p>
+    <button (click)="aoAdicionarAoCarrinho()" class="add-to-cart-button">Adicione no carrinho</button>
   </div>
 </div>
