@@ -1,23 +1,22 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../enviroments/enviroments';
 
-@Injectable({ providedIn: 'root' })
+
+@Injectable({
+  providedIn: 'root'
+})
 export class ProdutoService {
-  private apiUrl = `${environment.apiBaseUrl}${environment.endpoints.produtos}`;
+  private http = inject(HttpClient);
+  private apiUrl =` ${environment.apiBaseUrl}/produtos`;
 
-  constructor(private http: HttpClient) {}
+  createProduto(formData: FormData): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token || ''}`
+    });
 
-  listarProdutos(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
-  }
-
-  cadastrarProduto(produto: FormData): Observable<any> {
-    return this.http.post(this.apiUrl, produto);
-  }
-
-  deletarProduto(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+    return this.http.post(this.apiUrl, formData, { headers });
   }
 }

@@ -1,4 +1,3 @@
-// tela-produtos.component.ts
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProdutoService } from '../../../core/services/produtos.service';
@@ -46,27 +45,31 @@ export class TelaProdutosComponent implements OnInit {
     }
   }
 
-  // Submete formulário
-  cadastrarProduto() {
-    if (this.formProduto.invalid) return;
+  // Envia para o backend
+  submit() {
+  if (this.formProduto.invalid) return;
 
-    const formData = new FormData();
-    Object.keys(this.formProduto.controls).forEach(key => {
-      const value = this.formProduto.get(key)?.value;
-      if (value !== null && value !== undefined) {
-        formData.append(key, value);
-      }
-    });
+  const formData = new FormData();
+  formData.append('nome_produto', this.formProduto.get('nome_produto')?.value);
+  formData.append('descricao', this.formProduto.get('descricao')?.value);
+  formData.append('preco', this.formProduto.get('preco')?.value);
+  formData.append('estoque', this.formProduto.get('estoque')?.value);
 
-    this.produtoService.cadastrarProduto(formData).subscribe({
-      next: () => {
-        alert('Produto cadastrado com sucesso!');
-        this.formProduto.reset();
-      },
-      error: (err) => {
-        console.error(err);
-        alert('Erro ao cadastrar produto.');
-      }
-    });
+  const foto = this.formProduto.get('foto')?.value;
+  if (foto) {
+    formData.append('foto', foto);
   }
+
+  this.produtoService.createProduto(formData).subscribe({
+    next: (res) => {
+      console.log('Produto cadastrado com sucesso!', res);
+      this.formProduto.reset();
+      alert("produto cadastrado com sucesso!")
+    },
+    error: (err) => {
+      console.error('Erro ao cadastrar produto!', err);
+    }
+  });
+}
+
 }
