@@ -1,0 +1,85 @@
+/* Container do card */
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  max-width: 220px;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Garante que todos os cards na mesma linha tenham a mesma altura */
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Imagem do produto */
+.card-image {
+  width: 100%;
+  height: 200px; /* Altura fixa para a imagem */
+  object-fit: cover; /* Garante que a imagem cubra a área sem distorcer */
+  display: block;
+}
+
+/* Conteúdo do card */
+.card-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Faz o conteúdo crescer para preencher o espaço */
+}
+
+/* Título do produto */
+.card-title {
+  font-size: 1.25rem; /* 20px */
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #1a1a1a;
+}
+
+/* Descrição do produto */
+.card-description {
+  font-size: 0.9rem; /* 14.4px */
+  color: #666;
+  line-height: 1.5;
+  flex-grow: 1; /* Empurra o preço e o botão para o final */
+  margin-bottom: 16px;
+}
+
+/* Preço do produto */
+.card-price {
+  font-size: 1.5rem; /* 24px */
+  font-weight: 700;
+  color: #27ae60; /* Um verde vibrante */
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+/* Botão "Adicione no carrinho" */
+.add-to-cart-button {
+  background-color: #3498db; /* Um azul moderno */
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem; /* 16px */
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  align-self: stretch; /* Faz o botão ocupar toda a largura do padding */
+}
+
+.add-to-cart-button:hover {
+  background-color: #2980b9; /* Azul um pouco mais escuro no hover */
+  transform: scale(1.02);
+}
+
+.add-to-cart-button:active {
+  transform: scale(0.98); /* Efeito de clique */
+}
