@@ -16,4 +16,6 @@ export const environment = {
     produtos: '/produtos',
     produtosPorVendedor:'/meus-produtos'
   },
+  // Flag para usar dados mocados de vendas enquanto backend real não está pronto
+  useMockVendas: true,
 };

@@ -109,7 +109,7 @@
     <div class="skeleton-card" aria-hidden="true" *ngFor="let s of skeletons"></div>
   </ng-container>
   <ng-template #listaProdutos>
-  <div class="card-produto" *ngFor="let produto of produtosFiltrados; trackBy: trackById" [class.editando]="produtoEditando?.id === produto.id">
+  <div class="card-produto" *ngFor="let produto of produtosFiltrados; trackBy: trackById" [class.editando]="produtoEditando?.id_produto === produto.id_produto">
     <div class="thumb-wrapper">
       <img *ngIf="produto.foto; else semFoto" [src]="produto.foto" alt="{{ produto.nome_produto }}" />
       <ng-template #semFoto>
@@ -126,7 +126,7 @@
     </div>
     <div class="acoes">
       <button type="button" (click)="editarProduto(produto)">Editar</button>
-      <button type="button" class="excluir-btn" (click)="excluirProduto(produto.id)">Excluir</button>
+  <button type="button" class="excluir-btn" (click)="excluirProduto(produto.id_produto)">Excluir</button>
     </div>
   </div>
   </ng-template>

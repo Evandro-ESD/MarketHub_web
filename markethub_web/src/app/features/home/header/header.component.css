@@ -1,45 +1,61 @@
-/* Container do header */
+/* ===== Header Layout ===== */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 30px;
-  background-color: #6a11cb; /* Roxo degradê pode ser adicionado via linear-gradient */
+  padding: 14px 32px;
+  background: linear-gradient(90deg,#6a11cb 0%, #7837d3 40%, #2575fc 100%);
   color: #fff;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
   position: sticky;
   top: 0;
   z-index: 1000;
+  backdrop-filter: blur(6px);
 }
 
-/* Logo */
+/* ===== Logo ===== */
 .header .logo h1 {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 1.55rem;
+  font-weight: 700;
   margin: 0;
+  letter-spacing: .5px;
   cursor: pointer;
+  background: linear-gradient(90deg,#ffffff,#ffe082);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
-/* Menu de navegação */
+/* ===== Menu ===== */
 .header .menu {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 22px;
 }
 
-/* Links do menu */
+/* ===== Links ===== */
 .header .menu app-link {
-  text-decoration: none;
-  color: #fff;
+  position: relative;
+  color: #ffffff;
   font-weight: 500;
-  transition: color 0.3s;
+  text-decoration: none;
+  padding: 6px 4px;
+  transition: color .3s;
 }
-
-.header .menu app-link:hover {
-  color: #ffd700; /* Dourado ao passar o mouse */
+.header .menu app-link::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 0; height: 2px;
+  background: #ffd700;
+  transition: width .3s;
+  border-radius: 2px;
 }
+.header .menu app-link:hover { color: #ffe082; }
+.header .menu app-link:hover::after { width: 100%; }
+.header .menu app-link:focus-visible { outline: 2px solid #ffe082; outline-offset: 2px; }
 
-/* Informação do usuário */
+/* ===== User Info ===== */
 .user-info {
   display: flex;
   align-items: center;
@@ -47,7 +63,6 @@
   margin-left: 20px;
 }
 
-/* Avatar do usuário */
 .user-info .avatar {
   width: 36px;
   height: 36px;
@@ -56,24 +71,39 @@
   border: 2px solid #fff;
 }
 
-/* Nome do usuário */
 .user-info .username {
   font-weight: 500;
   font-size: 14px;
 }
 
-/* Botão de logout */
+/* ===== Logout Button ===== */
 .logout-btn {
-  background-color: #ff4b5c;
+  background: #ff4b5c;
   color: #fff;
   border: none;
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 13px;
-  transition: background-color 0.3s;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.18);
+  transition: background .25s, transform .15s;
 }
+.logout-btn:hover { background: #ff1e2d; }
+.logout-btn:active { transform: translateY(1px); }
 
-.logout-btn:hover {
-  background-color: #ff1e2d;
+/* ===== Responsive ===== */
+@media (max-width: 800px) {
+  .header { padding: 12px 18px; }
+  .header .menu { gap: 14px; }
+  .header .logo h1 { font-size: 1.25rem; }
+  .user-info .username { display: none; }
+}
+@media (max-width: 520px) {
+  .header { flex-wrap: wrap; gap: 10px; }
+  .header .menu { order: 3; width: 100%; justify-content: space-around; }
+  .logout-btn { padding: 6px 10px; }
 }
