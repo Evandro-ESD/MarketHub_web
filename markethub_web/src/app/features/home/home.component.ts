@@ -19,7 +19,6 @@ interface Produto {
   standalone: true,
   imports: [
     CommonModule,
-    HeaderComponent,
     FooterComponent,
     CarouselComponent,
     CardComponent,
