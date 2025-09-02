@@ -11,7 +11,7 @@
   }
 
   <div class="grid">
-    @for(produto of meusProdutos; track produto){
+    @for(produto of meusProdutos; track produto.id_produto){
     <div class="card">
       <img
         [src]="produto.foto"
