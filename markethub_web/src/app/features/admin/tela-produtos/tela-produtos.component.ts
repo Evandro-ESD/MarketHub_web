@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { ProdutoService } from '../../../core/services/produtos.service';
+import { AlertService } from '../../../shared/services/alert.service';
 
 @Component({
   imports: [ReactiveFormsModule, FormsModule, CommonModule],
@@ -29,7 +30,8 @@ export class TelaProdutosComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private produtoService: ProdutoService,
-    private auth: AuthService
+  private auth: AuthService,
+  private alerts: AlertService
   ) { }
 
   ngOnInit() {
@@ -115,6 +117,7 @@ export class TelaProdutosComponent implements OnInit {
         },
         error: (err) => {
           console.error('Erro ao editar produto:', err);
+          this.alerts.error('Erro ao editar produto');
         }
       });
     } else {
@@ -126,10 +129,11 @@ export class TelaProdutosComponent implements OnInit {
           const fileInput = document.getElementById('foto') as HTMLInputElement;
           if (fileInput) fileInput.value = '';
           this.previewImagem = null;
-          alert("produto cadastrado com sucesso!");
+          this.alerts.success('Produto cadastrado com sucesso!');
         },
         error: (err) => {
           console.error('Erro ao cadastrar produto!', err);
+          this.alerts.error('Erro ao cadastrar produto');
         }
       });
     }

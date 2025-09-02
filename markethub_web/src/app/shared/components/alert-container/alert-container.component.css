@@ -1,0 +1,38 @@
+/* Host container fixado à direita */
+.toast-host{position:fixed;top:88px;right:12px;display:flex;flex-direction:column;gap:14px;z-index:2500;max-width:360px;padding:4px 2px 4px 4px;pointer-events:none}
+
+/* Card base */
+.toast{--shadow:0 4px 10px -2px rgba(0,0,0,.18),0 2px 4px -1px rgba(0,0,0,.12);position:relative;display:flex;align-items:flex-start;gap:10px;background:rgba(255,255,255,0.85);backdrop-filter:blur(12px) saturate(180%);-webkit-backdrop-filter:blur(12px) saturate(180%);border:1px solid rgba(255,255,255,.4);border-radius:18px;padding:14px 16px 16px 54px;box-shadow:var(--shadow);font:500 .82rem/1.3 system-ui,sans-serif;color:#1e293b;overflow:hidden;isolation:isolate;pointer-events:auto;animation:slideIn .55s cubic-bezier(.4,0,.2,1)}
+.toast::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,.5),rgba(255,255,255,0));-webkit-mask:linear-gradient(#000,#000) content-box,linear-gradient(#000,#000);mask:linear-gradient(#000,#000) content-box,linear-gradient(#000,#000);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+
+/* Side accent (anexo feeling) */
+.toast .side-accent{position:absolute;left:0;top:0;bottom:0;width:6px;border-top-left-radius:inherit;border-bottom-left-radius:inherit;background:linear-gradient(200deg,#6366f1,#8b5cf6 35%,#d946ef)}
+
+/* Ícone */
+.toast .icon{position:absolute;left:16px;top:14px;font-size:1.15rem;filter:drop-shadow(0 1px 1px rgba(0,0,0,.15))}
+
+/* Corpo */
+.toast .body{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.toast .text{word-wrap:break-word;overflow-wrap:anywhere}
+
+/* Botão fechar */
+.toast .close{margin-left:8px;cursor:pointer;appearance:none;border:none;background:rgba(255,255,255,.35);width:26px;height:26px;display:grid;place-items:center;border-radius:8px;font-size:1.05rem;line-height:1;color:#334155;transition:background .25s, transform .25s}
+.toast .close:hover{background:rgba(255,255,255,.6);transform:scale(1.06)}
+.toast .close:active{transform:scale(.92)}
+
+/* Tipos com gradientes sutis */
+.toast.success{--grad:linear-gradient(135deg,#22c55e33,#16a34a22);}
+.toast.error{--grad:linear-gradient(135deg,#ef444433,#dc262622);}
+.toast.warning{--grad:linear-gradient(135deg,#f59e0b44,#d9770622);}
+.toast.info{--grad:linear-gradient(135deg,#3b82f633,#2563eb22);}
+.toast.success{border-color:#16a34a40}
+.toast.error{border-color:#dc262640}
+.toast.warning{border-color:#d9770640}
+.toast.info{border-color:#2563eb40}
+.toast{background:linear-gradient(145deg,rgba(255,255,255,.9),rgba(255,255,255,.75)) var(--grad);}
+
+/* Barra de progresso */
+.toast .progress{position:absolute;left:0;bottom:0;height:3px;background:linear-gradient(90deg,#6366f1,#8b5cf6,#d946ef,#f59e0b);animation:progress linear forwards}
+
+@keyframes progress{from{width:100%}to{width:0}}
+@keyframes slideIn{0%{opacity:0;transform:translateX(40px) scale(.96)}60%{opacity:1;transform:translateX(-4px) scale(1)}100%{opacity:1;transform:translateX(0) scale(1)}}
