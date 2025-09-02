@@ -55,4 +55,22 @@ export class ProdutoService {
   getMeusProdutos() {
     return this.listaProdutos$;
   }
+
+  // Atualizar produto
+  updateProduto(id: number, formData: FormData) {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: token ? `Bearer ${token}` : '',
+    });
+    return this.http.put(`${this.apiUrl}/${id}`, formData, { headers });
+  }
+
+  // Excluir produto
+  deleteProduto(id: number) {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: token ? `Bearer ${token}` : '',
+    });
+    return this.http.delete(`${this.apiUrl}/${id}`, { headers });
+  }
 }

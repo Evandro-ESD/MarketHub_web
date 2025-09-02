@@ -1,16 +1,30 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { ProdutoService } from '../../../core/services/produtos.service';
 
 @Component({
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FormsModule, CommonModule],
   selector: 'app-tela-produtos',
   templateUrl: './tela-produtos.component.html',
   styleUrls: ['./tela-produtos.component.css']
 })
 export class TelaProdutosComponent implements OnInit {
   formProduto!: FormGroup;
+  produtos: any[] = [];
+  produtoEditando: any = null;
+  filtro: string = '';
+  loading = false;
+  skeletons = Array.from({ length: 6 });
+  previewImagem: string | null = null;
+  modalAberto = false;
+
+  get produtosFiltrados() {
+    const termo = this.filtro.trim().toLowerCase();
+    if (!termo) return this.produtos;
+    return this.produtos.filter(p => (p.nome_produto || '').toLowerCase().includes(termo));
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -35,17 +49,45 @@ export class TelaProdutosComponent implements OnInit {
         this.formProduto.patchValue({ id_vendedor: res?.id_usuario });
       }
     });
+
+  this.carregarProdutos();
   }
+
 
   // Captura arquivo do input
   onFileChange(event: any) {
     const file = event.target.files[0];
     if (file) {
       this.formProduto.patchValue({ foto: file });
+      const reader = new FileReader();
+      reader.onload = () => this.previewImagem = reader.result as string;
+      reader.readAsDataURL(file);
     }
   }
 
-  // Envia para o backend
+  removerImagem() {
+    this.formProduto.patchValue({ foto: null });
+    this.previewImagem = null;
+    const fileInput = document.getElementById('foto') as HTMLInputElement;
+    if (fileInput) fileInput.value = '';
+  }
+
+  carregarProdutos() {
+    this.loading = true;
+    this.produtoService.getAllProdutos().subscribe({
+      next: (produtos: any[]) => {
+        this.produtos = produtos;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar produtos:', err);
+        this.loading = false;
+      }
+    });
+  }
+
+
+  // Envia para o backend (cadastrar ou editar)
   submit() {
     if (this.formProduto.invalid) return;
 
@@ -54,30 +96,85 @@ export class TelaProdutosComponent implements OnInit {
     formData.append('descricao', this.formProduto.get('descricao')?.value);
     formData.append('preco', this.formProduto.get('preco')?.value);
     formData.append('estoque', this.formProduto.get('estoque')?.value);
+    formData.append('id_vendedor', this.formProduto.get('id_vendedor')?.value);
 
     const foto = this.formProduto.get('foto')?.value;
     if (foto) {
       formData.append('foto', foto);
     }
 
-    // console.log("formData: no tela ts: ", formData.values)
-
-    this.produtoService.createProduto(formData).subscribe({
-      next: (res) => {
-        console.log('Produto cadastrado com sucesso!', res);
-        this.formProduto.reset();
-
-        // Limpar input de arquivo fisicamente
-        const fileInput = document.getElementById('foto') as HTMLInputElement;
-        if (fileInput) {
-          fileInput.value = '';
+    if (this.produtoEditando) {
+      // Editar produto
+      this.produtoService.updateProduto(this.produtoEditando.id, formData).subscribe({
+        next: () => {
+          this.carregarProdutos();
+          this.cancelarEdicao();
+        },
+        error: (err) => {
+          console.error('Erro ao editar produto:', err);
         }
-        alert("produto cadastrado com sucesso!")
-      },
-      error: (err) => {
-        console.error('Erro ao cadastrar produto!', err);
-      }
-    });
+      });
+    } else {
+      // Cadastrar novo produto
+      this.produtoService.createProduto(formData).subscribe({
+        next: (res) => {
+          this.carregarProdutos();
+          this.formProduto.reset();
+          const fileInput = document.getElementById('foto') as HTMLInputElement;
+          if (fileInput) fileInput.value = '';
+          this.previewImagem = null;
+          alert("produto cadastrado com sucesso!");
+        },
+        error: (err) => {
+          console.error('Erro ao cadastrar produto!', err);
+        }
+      });
+    }
+  }
+
+  editarProduto(produto: any) {
+    this.produtoEditando = produto;
+  this.formProduto.patchValue(produto);
+  this.previewImagem = produto.foto || null;
+    if (!this.modalAberto) {
+      this.abrirModal();
+    }
+  }
+
+  cancelarEdicao() {
+    this.produtoEditando = null;
+    this.formProduto.reset();
+    const fileInput = document.getElementById('foto') as HTMLInputElement;
+  if (fileInput) fileInput.value = '';
+  this.previewImagem = null;
+  }
+
+  excluirProduto(id: number) {
+    if (confirm('Deseja realmente excluir este produto?')) {
+      this.produtoService.deleteProduto(id).subscribe({
+        next: () => {
+          this.carregarProdutos();
+        },
+        error: (err) => {
+          console.error('Erro ao excluir produto:', err);
+        }
+      });
+    }
+  }
+
+  trackById(_: number, item: any) { return item.id; }
+
+  abrirModal() {
+    this.modalAberto = true;
+    setTimeout(() => {
+      const first = document.querySelector('.modal input, .modal textarea') as HTMLElement;
+      first?.focus();
+    }, 50);
+  }
+
+  fecharModal() {
+    this.modalAberto = false;
+    this.cancelarEdicao();
   }
 
 }

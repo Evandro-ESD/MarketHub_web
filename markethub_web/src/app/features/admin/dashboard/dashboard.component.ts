@@ -1,37 +1,33 @@
-import { DecimalPipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { ProdutoService } from '../../../core/services/produtos.service';
 import { Produtos } from '../../../shared/entities/produtos.entity';
+import { AuthService } from '../../../core/services/auth.service';
 import { User } from '../../../shared/entities/user.entity';
-import { AuthService } from './../../../core/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [DecimalPipe],
-  // imports: [],
+  imports: [CommonModule, DecimalPipe],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css',
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  private produtoService = inject(ProdutoService);
+  private authService = inject(AuthService);
+
   meusProdutos: Produtos[] = [];
-  isLoading: boolean = false;
-  http = inject(HttpClient);
-  produtoService = inject(ProdutoService);
-  authService = inject(AuthService);
-  user?: User | null;
+  isLoading = false;
+  user: User | null = null;
 
   ngOnInit(): void {
-    this.produtoService.getMeusProdutos().subscribe((res) => {
+    // carrega produtos do usuário logado
+    this.isLoading = true;
+    this.produtoService.getMeusProdutos().subscribe(res => {
       this.meusProdutos = res;
       this.isLoading = false;
     });
+    this.produtoService.carregarMeusProdutos();
 
-    this.produtoService.carregarMeusProdutos(); // dispara a requisição
-
-    // Subscreve ao BehaviorSubject para atualizar automaticamente
-    this.authService.currentUser$.subscribe((u) => {
-      this.user = u;
-    });
+    this.authService.currentUser$.subscribe(u => this.user = u);
   }
 }
