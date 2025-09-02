@@ -98,9 +98,12 @@ export class TelaProdutosComponent implements OnInit {
     formData.append('estoque', this.formProduto.get('estoque')?.value);
     formData.append('id_vendedor', this.formProduto.get('id_vendedor')?.value);
 
-    const foto = this.formProduto.get('foto')?.value;
-    if (foto) {
-      formData.append('foto', foto);
+    const fotoCtrlVal = this.formProduto.get('foto')?.value;
+    // Se for File anexar; se for string (já existente) não reenviar; se null enviar campo vazio para permitir remoção
+    if (fotoCtrlVal instanceof File) {
+      formData.append('foto', fotoCtrlVal);
+    } else if (fotoCtrlVal === null) {
+      formData.append('foto', '');
     }
 
     if (this.produtoEditando) {
