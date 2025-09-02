@@ -38,6 +38,10 @@
 .logo h1 { margin:0; font-size: clamp(1.1rem,1.9vw,1.7rem); font-weight:700; letter-spacing:.5px; color:var(--clr-text); display:flex; align-items:center; gap:10px; }
 .logo h1::before { content:''; width:26px; height:26px; border-radius:8px; background:linear-gradient(135deg,var(--clr-primary) 0%, var(--clr-accent) 100%); box-shadow:0 4px 10px -3px rgba(13,110,253,.4); }
 
+/* Cart badge */
+.cart-link-wrapper { position:relative; display:inline-block; }
+.cart-badge { position:absolute; top:2px; right:4px; background:#ff3d3d; color:#fff; font-size:.55rem; line-height:1; padding:3px 5px 4px; border-radius:20px; font-weight:600; box-shadow:0 0 0 2px rgba(255,255,255,.4), 0 2px 6px -2px rgba(0,0,0,.35); min-width:20px; text-align:center; }
+
 /* Menu */
 .menu { display:flex; align-items:center; gap:10px; }
 .menu app-link { position:relative; padding:8px 14px; font-size:.8rem; font-weight:500; color:var(--clr-text-muted); border-radius: var(--radius-sm); transition: background .25s, color .25s, box-shadow .25s; }

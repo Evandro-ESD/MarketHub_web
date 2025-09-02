@@ -46,6 +46,13 @@ export class ProdutoService {
     );
   }
 
+  // Últimos produtos (para carousel)
+  getUltimosProdutos(limit=5){
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: token ? `Bearer ${token}` : '' });
+    return this.http.get<Produtos[]>(`${this.apiUrl}?last=${limit}`, { headers });
+  }
+
   // Carregar produtos do vendedor logado e atualizar BehaviorSubject
   carregarMeusProdutos() {
     const token = localStorage.getItem('token');
