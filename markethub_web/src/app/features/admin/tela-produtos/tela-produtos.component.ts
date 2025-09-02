@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } 
 import { AuthService } from '../../../core/services/auth.service';
 import { ProdutoService } from '../../../core/services/produtos.service';
 import { AlertService } from '../../../shared/services/alert.service';
+import { ConfirmService } from '../../../shared/services/confirm.service';
 
 @Component({
   imports: [ReactiveFormsModule, FormsModule, CommonModule],
@@ -29,9 +30,10 @@ export class TelaProdutosComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private produtoService: ProdutoService,
+  private produtoService: ProdutoService,
   private auth: AuthService,
-  private alerts: AlertService
+  private alerts: AlertService,
+  private confirm: ConfirmService
   ) { }
 
   ngOnInit() {
@@ -90,13 +92,11 @@ export class TelaProdutosComponent implements OnInit {
 
 
   // Envia para o backend (cadastrar ou editar)
-  submit() {
+  async submit() {
     if (this.formProduto.invalid) return;
-
-  // Confirmação antes de prosseguir
-  const mensagemConfirmacao = this.produtoEditando ? 'Deseja realmente salvar as alterações deste produto?' : 'Deseja realmente cadastrar este novo produto?';
-  const confirmado = confirm(mensagemConfirmacao);
-  if (!confirmado) return; // Usuário cancelou
+    const mensagemConfirmacao = this.produtoEditando ? 'Deseja realmente salvar as alterações deste produto?' : 'Deseja realmente cadastrar este novo produto?';
+    const ok = await this.confirm.ask({ message: mensagemConfirmacao, title: this.produtoEditando ? 'Confirmar Edição' : 'Confirmar Cadastro' });
+    if(!ok) return;
 
     const formData = new FormData();
     formData.append('nome_produto', this.formProduto.get('nome_produto')?.value);
@@ -157,18 +157,30 @@ export class TelaProdutosComponent implements OnInit {
   this.previewImagem = null;
   }
 
-  excluirProduto(id: number) {
-    if (confirm('Deseja realmente excluir este produto?')) {
-      console.log("IDDDDDDD", id)
-      this.produtoService.deleteProduto(id).subscribe({
-        next: () => {
-          this.carregarProdutos();
-        },
-        error: (err) => {
-          console.error('Erro ao excluir produto:', err);
+  async excluirProduto(id_produto: number) {
+    if (!id_produto) return;
+    const ok = await this.confirm.ask({
+      message: 'Deseja realmente excluir este produto? Esta ação não pode ser desfeita.',
+      title: 'Excluir Produto',
+      confirmText: 'Excluir',
+      danger: true
+    });
+    if(!ok) return;
+    this.produtoService.deleteProduto(id_produto).subscribe({
+      next: () => {
+        // Se estava editando este, cancelar edição
+        if (this.produtoEditando?.id_produto === id_produto) {
+          this.cancelarEdicao();
         }
-      });
-    }
+        this.alerts.success('Produto excluído com sucesso');
+        this.carregarProdutos();
+      },
+      error: (err) => {
+        console.error('Erro ao excluir produto:', err);
+        const msg = err.error?.message || 'Erro ao excluir produto';
+        this.alerts.error(msg);
+      }
+    });
   }
 
   trackById(_: number, item: any) { return item.id_produto; }

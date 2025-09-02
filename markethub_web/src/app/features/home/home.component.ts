@@ -37,20 +37,15 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.produtoService.getUltimosProdutos(10).subscribe({
       next: (lista) => {
-        // filtrar só com foto e ordenar por id desc (já vem desc) e limitar 5
-        const base = lista.filter(p=> !!p.foto).slice(0,5);
+        const base = lista.slice(0,5); // já vem ordenado por id desc do backend
         this.produtos = base.map(p => {
           let url = 'assets/img/default-avatar.png';
           if (p.foto && typeof p.foto === 'string') {
-            url = p.foto.startsWith('http') ? p.foto : (p.foto.startsWith('uploads/') ? `http://localhost:3049/${p.foto}` : p.foto);
+            if (p.foto.startsWith('http')) url = p.foto; 
+            else if (p.foto.startsWith('uploads/')) url = `http://localhost:3049/${p.foto}`; 
+            else if (!p.foto.includes('/')) url = `http://localhost:3049/uploads/produtos/${p.foto}`; 
           }
-          return {
-            id: p.id_produto,
-            titulo: p.nome_produto,
-            descricao: p.descricao,
-            preco: p.preco,
-            imageUrl: url
-          };
+          return { id: p.id_produto, titulo: p.nome_produto, descricao: p.descricao, preco: p.preco, imageUrl: url };
         });
       },
       error: (err) => console.error('Erro carregando últimos produtos', err),
@@ -69,5 +64,11 @@ export class HomeComponent implements OnInit {
       foto: produto.imageUrl
     };
     this.carrinho.adicionar(mockProduto, 1);
+  }
+
+  scrollTopo(){
+    if(typeof window !== 'undefined'){
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
   }
 }

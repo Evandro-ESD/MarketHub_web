@@ -50,7 +50,31 @@ export class ProdutoService {
   getUltimosProdutos(limit=5){
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({ Authorization: token ? `Bearer ${token}` : '' });
-    return this.http.get<Produtos[]>(`${this.apiUrl}?last=${limit}`, { headers });
+    return this.http.get<Produtos[]>(`${this.apiUrl}?last=${limit}`, { headers }).pipe(
+      tap(produtos => {
+        produtos.forEach(produto => {
+          if (!produto.foto) return; // deixa sem imagem
+          if (typeof produto.foto === 'string') {
+            // Se já vier absoluta mantém
+            if (produto.foto.startsWith('http')) return;
+            // Se vier caminho com uploads/produtos/arquivo.ext
+            if (produto.foto.startsWith('uploads/')) {
+              produto.foto = `http://localhost:3049/${produto.foto}`;
+              return;
+            }
+            // Se vier só o nome do arquivo
+            if (!produto.foto.includes('/')) {
+              produto.foto = `http://localhost:3049/uploads/produtos/${produto.foto}`;
+              return;
+            }
+            // Se vier caminho completo do filesystem (ex: C:\) ignora e substitui por default
+            if (/^[A-Za-z]:\\/.test(produto.foto)) {
+              produto.foto = 'assets/img/default-avatar.png';
+            }
+          }
+        });
+      })
+    );
   }
 
   // Carregar produtos do vendedor logado e atualizar BehaviorSubject
