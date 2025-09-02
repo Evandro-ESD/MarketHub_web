@@ -50,7 +50,7 @@ export class TelaProdutosComponent implements OnInit {
       }
     });
 
-  this.carregarProdutos();
+    this.carregarProdutos();
   }
 
 
@@ -76,6 +76,17 @@ export class TelaProdutosComponent implements OnInit {
     this.loading = true;
     this.produtoService.getAllProdutos().subscribe({
       next: (produtos: any[]) => {
+        // Ajusta o caminho das imagens
+        produtos.forEach(produto => {
+          if (!produto.foto) {
+            // Exibe uma imagem padrão
+            produto.foto = 'path/to/default-image.jpg';
+          } else if (typeof produto.foto === 'string' && !produto.foto.startsWith('http')) {
+            // Reconstrói o caminho completo
+            produto.foto = `http://localhost:3049/uploads/produtos/${produto.foto}`;
+          }
+        });
+
         this.produtos = produtos;
         this.loading = false;
       },
@@ -134,8 +145,8 @@ export class TelaProdutosComponent implements OnInit {
 
   editarProduto(produto: any) {
     this.produtoEditando = produto;
-  this.formProduto.patchValue(produto);
-  this.previewImagem = produto.foto || null;
+    this.formProduto.patchValue(produto);
+    this.previewImagem = produto.foto || null;
     if (!this.modalAberto) {
       this.abrirModal();
     }
@@ -145,8 +156,8 @@ export class TelaProdutosComponent implements OnInit {
     this.produtoEditando = null;
     this.formProduto.reset();
     const fileInput = document.getElementById('foto') as HTMLInputElement;
-  if (fileInput) fileInput.value = '';
-  this.previewImagem = null;
+    if (fileInput) fileInput.value = '';
+    this.previewImagem = null;
   }
 
   excluirProduto(id: number) {
