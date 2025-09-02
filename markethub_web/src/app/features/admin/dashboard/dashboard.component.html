@@ -1,1 +1,40 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+<h1 class="titulo-estoque">
+  Área de estoque, <span class="user-nome">{{ user?.nome }}</span>
+</h1>
+  <h2>📦 Meus Produtos</h2>
+
+  @if(isLoading){
+  <div>Carregando...</div>
+  } @if(!isLoading && meusProdutos.length === 0){
+  <div>Nenhum produto cadastrado.</div>
+  }
+
+  <div class="grid">
+    @for(produto of meusProdutos; track produto){
+    <div class="card">
+      <img
+        [src]="produto.foto"
+        alt="{{ produto.nome_produto }}"
+        class="produto-foto"
+      />
+
+      <div class="card-body">
+        <h3>{{ produto.nome_produto }}</h3>
+        <p>{{ produto.descricao }}</p>
+
+        <div class="info">
+          <span><b>ID:</b> {{ produto.id_produto }}</span>
+          <span><b>Preço:</b> R$ {{ produto.preco | number : "1.2-2" }}</span>
+          <span><b>Estoque:</b> {{ produto.estoque }}</span>
+        </div>
+
+        <div class="footer">
+          <button class="btn">Editar</button>
+          <button class="btn">Remover</button>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>

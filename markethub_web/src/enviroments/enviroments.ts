@@ -14,5 +14,6 @@ export const environment = {
     users: '/users',
     login: '/auth/login',
     produtos: '/produtos',
+    produtosPorVendedor:'/meus-produtos'
   },
 };
