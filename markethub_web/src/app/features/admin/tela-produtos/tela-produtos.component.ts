@@ -104,6 +104,11 @@ export class TelaProdutosComponent implements OnInit {
   submit() {
     if (this.formProduto.invalid) return;
 
+  // Confirmação antes de prosseguir
+  const mensagemConfirmacao = this.produtoEditando ? 'Deseja realmente salvar as alterações deste produto?' : 'Deseja realmente cadastrar este novo produto?';
+  const confirmado = confirm(mensagemConfirmacao);
+  if (!confirmado) return; // Usuário cancelou
+
     const formData = new FormData();
     formData.append('nome_produto', this.formProduto.get('nome_produto')?.value);
     formData.append('descricao', this.formProduto.get('descricao')?.value);
@@ -120,11 +125,11 @@ export class TelaProdutosComponent implements OnInit {
     }
 
     if (this.produtoEditando) {
-      // Editar produto (usa id_produto vindo do backend)
       this.produtoService.updateProduto(this.produtoEditando.id_produto, formData).subscribe({
         next: () => {
           this.carregarProdutos();
-          this.cancelarEdicao();
+          this.alerts.success('Produto atualizado com sucesso!');
+          this.fecharModal();
         },
         error: (err) => {
           console.error('Erro ao editar produto:', err);
@@ -132,15 +137,11 @@ export class TelaProdutosComponent implements OnInit {
         }
       });
     } else {
-      // Cadastrar novo produto
       this.produtoService.createProduto(formData).subscribe({
-        next: (res) => {
+        next: () => {
           this.carregarProdutos();
-          this.formProduto.reset();
-          const fileInput = document.getElementById('foto') as HTMLInputElement;
-          if (fileInput) fileInput.value = '';
-          this.previewImagem = null;
           this.alerts.success('Produto cadastrado com sucesso!');
+          this.fecharModal();
         },
         error: (err) => {
           console.error('Erro ao cadastrar produto!', err);
