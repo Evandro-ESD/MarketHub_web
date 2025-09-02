@@ -2,6 +2,7 @@ import { Component, OnInit, inject, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VendasService } from '../../../core/services/vendas.service';
 import { Chart, ChartConfiguration } from 'chart.js/auto';
+import { AuthService } from '../../../core/services/auth.service';
 
 interface ResumoVendas {
   totalGeral: number; totalHoje: number; pedidosHoje: number; totalMes: number; totalAno: number;
@@ -16,6 +17,7 @@ interface ResumoVendas {
 })
 export class RelatoriosComponent implements OnInit, AfterViewInit {
   private vendas = inject(VendasService);
+  private auth = inject(AuthService);
   carregando = true;
   resumo: ResumoVendas | null = null;
   serieDiaria: any[] = [];
@@ -23,8 +25,12 @@ export class RelatoriosComponent implements OnInit, AfterViewInit {
   serieAnual: any[] = [];
   topProdutos: any[] = [];
   anoAtual = new Date().getFullYear();
+  nomeUsuario: string | null = null;
 
-  ngOnInit(): void { this.carregar(); }
+  ngOnInit(): void {
+    this.carregar();
+    this.auth.currentUser$.subscribe(u => this.nomeUsuario = u?.nome || null);
+  }
   ngAfterViewInit(): void { /* charts serão criados após dados */ }
 
   private tentarRender(){

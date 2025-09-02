@@ -1,5 +1,5 @@
 <section class="dashboard-wrapper" *ngIf="!carregando; else loadingTpl">
-	<h1>Dashboard de Vendas</h1>
+	<h1>Dashboard de Vendas <span *ngIf="nomeUsuario" class="usuario-nome" aria-label="Nome da conta">{{ nomeUsuario }}</span></h1>
 	<div class="cards">
 		<div class="card">
 			<span class="label">Hoje</span>
