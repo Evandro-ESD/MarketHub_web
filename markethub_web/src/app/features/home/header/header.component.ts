@@ -8,7 +8,7 @@ import { NgIf, NgFor } from '@angular/common';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
-  imports: [LinkComponent, NgIf, NgFor]
+  imports: [LinkComponent]
 })
 export class HeaderComponent implements OnInit {
   user?: User | null;
