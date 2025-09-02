@@ -4,12 +4,18 @@ import { CadastroComponent } from './features/auth/cadastro/cadastro.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { HomeComponent } from './features/home/home.component';
 import { ContactComponent } from './pages/contact/contact/contact.component';
+import { CarrinhoComprasComponent } from './features/carrinho-compras/carrinho-compras.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
     title: 'MarkettHub',
+  },
+  {
+    path: 'carrinho',
+    component: CarrinhoComprasComponent,
+    title: 'Seu Carrinho'
   },
   {
     path: 'login',

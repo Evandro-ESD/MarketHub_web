@@ -2,6 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { LinkComponent } from "../../../shared/components/link/link.component";
 import { User } from './../../../shared/entities/user.entity';
+import { CarrinhoService } from '../../../core/services/carrinho.service';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +15,7 @@ export class HeaderComponent implements OnInit {
   menuOpen = signal(false);
   toggleMenu(){ this.menuOpen.set(!this.menuOpen()); }
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, public carrinho: CarrinhoService) {}
 
   ngOnInit() {
     // Subscreve ao BehaviorSubject para atualizar automaticamente

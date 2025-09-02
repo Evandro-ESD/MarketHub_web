@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FooterComponent } from './footer/footer.component';
 import { CarouselComponent } from '../../shared/components/carousel/carousel.component';
 import { CardComponent } from '../../shared/components/card/card.component';
+import { CarrinhoService } from '../../core/services/carrinho.service';
 
 // Interface para garantir a tipagem correta dos seus produtos
 interface Produto {
@@ -58,8 +59,18 @@ export class HomeComponent {
     }
   ];
 
+  constructor(private carrinho: CarrinhoService){}
+
   aoAdicionarProdutoAoCarrinho(produto: Produto) {
-    console.log(`Produto adicionado ao carrinho: ${produto.titulo}`);
-    // Aqui você implementaria a lógica para adicionar o item a um serviço de carrinho
+    const mockProduto = {
+      id_produto: produto.id,
+      nome_produto: produto.titulo,
+      descricao: produto.descricao,
+      preco: produto.preco,
+      estoque: 999,
+      id_vendedor: 0,
+      foto: produto.imageUrl
+    };
+    this.carrinho.adicionar(mockProduto, 1);
   }
 }
