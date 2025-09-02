@@ -8,6 +8,12 @@
   <nav class="menu" [attr.data-open]="menuOpen()">
     <app-link class="md" text="Home" linkRotas="/" [exact]="true"></app-link>
     <app-link class="md" text="Contato" linkRotas="/contato"></app-link>
+    <span class="cart-link-wrapper">
+      <app-link class="md" text="Carrinho" linkRotas="/carrinho"></app-link>
+      @if(carrinho.totalQuantidade() > 0){
+        <span class="cart-badge">{{ carrinho.totalQuantidade() }}</span>
+      }
+    </span>
     @if(!user){
       <app-link class="md" text="Login" linkRotas="/login"></app-link>
       <app-link class="md" text="Cadastre-se" linkRotas="/cadastro"></app-link>
