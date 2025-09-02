@@ -159,6 +159,7 @@ export class TelaProdutosComponent implements OnInit {
 
   excluirProduto(id: number) {
     if (confirm('Deseja realmente excluir este produto?')) {
+      console.log("IDDDDDDD", id)
       this.produtoService.deleteProduto(id).subscribe({
         next: () => {
           this.carregarProdutos();
