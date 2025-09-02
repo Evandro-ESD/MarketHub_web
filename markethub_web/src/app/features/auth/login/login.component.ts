@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { AlertService } from '../../../shared/services/alert.service';
 import { LoginResponse } from '../../../shared/entities/user.entity';
 
 @Component({
@@ -17,6 +18,7 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private alerts = inject(AlertService);
 
   // Formulário de login
   loginForm = this.fb.group({
@@ -33,7 +35,7 @@ export class LoginComponent {
 
     this.authService.login(nome!, senha!).subscribe({
       next: (res: LoginResponse) => {
-        alert('Login realizado com sucesso!');
+        this.alerts.success('Login realizado com sucesso!');
         console.log('response no login component', res);
 
         if (res.perfil === 'VENDEDOR') {
@@ -43,7 +45,7 @@ export class LoginComponent {
         }
       },
       error: (err) => {
-        alert(err.error?.message || 'Erro no login');
+        this.alerts.error(err.error?.message || 'Erro no login');
         this.loading = false;
       },
       complete: () => {

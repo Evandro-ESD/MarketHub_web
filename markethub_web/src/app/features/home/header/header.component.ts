@@ -2,7 +2,6 @@ import { Component, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { LinkComponent } from "../../../shared/components/link/link.component";
 import { User } from './../../../shared/entities/user.entity';
-import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-header',

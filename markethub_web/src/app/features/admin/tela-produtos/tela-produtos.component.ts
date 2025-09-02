@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { ProdutoService } from '../../../core/services/produtos.service';
+import { AlertService } from '../../../shared/services/alert.service';
 
 @Component({
   imports: [ReactiveFormsModule, FormsModule, CommonModule],
@@ -29,7 +30,8 @@ export class TelaProdutosComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private produtoService: ProdutoService,
-    private auth: AuthService
+  private auth: AuthService,
+  private alerts: AlertService
   ) { }
 
   ngOnInit() {
@@ -109,9 +111,12 @@ export class TelaProdutosComponent implements OnInit {
     formData.append('estoque', this.formProduto.get('estoque')?.value);
     formData.append('id_vendedor', this.formProduto.get('id_vendedor')?.value);
 
-    const foto = this.formProduto.get('foto')?.value;
-    if (foto) {
-      formData.append('foto', foto);
+    const fotoCtrlVal = this.formProduto.get('foto')?.value;
+    // Se for File anexar; se for string (já existente) não reenviar; se null enviar campo vazio para permitir remoção
+    if (fotoCtrlVal instanceof File) {
+      formData.append('foto', fotoCtrlVal);
+    } else if (fotoCtrlVal === null) {
+      formData.append('foto', '');
     }
 
     if (this.produtoEditando) {
@@ -123,6 +128,7 @@ export class TelaProdutosComponent implements OnInit {
         },
         error: (err) => {
           console.error('Erro ao editar produto:', err);
+          this.alerts.error('Erro ao editar produto');
         }
       });
     } else {
@@ -134,10 +140,11 @@ export class TelaProdutosComponent implements OnInit {
           const fileInput = document.getElementById('foto') as HTMLInputElement;
           if (fileInput) fileInput.value = '';
           this.previewImagem = null;
-          alert("produto cadastrado com sucesso!");
+          this.alerts.success('Produto cadastrado com sucesso!');
         },
         error: (err) => {
           console.error('Erro ao cadastrar produto!', err);
+          this.alerts.error('Erro ao cadastrar produto');
         }
       });
     }
