@@ -33,7 +33,16 @@ export class ProdutoService {
     });
 
     return this.http.get<Produtos[]>(this.apiUrl, { headers }).pipe(
-      tap((res) => console.log('RESPOSTA DO GET PRODUTOS: ', res))
+      tap((produtos) => {
+        produtos.forEach(produto => {
+          if (!produto.foto) {
+            produto.foto = 'path/to/default-image.jpg';
+          } else if (typeof produto.foto === 'string' && !produto.foto.includes('/')) {
+            produto.foto = `http://localhost:3049/uploads/produtos/${produto.foto}`;
+          }
+        });
+        console.log('RESPOSTA DO GET PRODUTOS: ', produtos);
+      })
     );
   }
 
