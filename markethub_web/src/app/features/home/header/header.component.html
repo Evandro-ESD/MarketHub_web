@@ -1,43 +1,25 @@
-<header class="header">
+<header class="header" [class.menu-open]="menuOpen()">
   <div class="logo">
     <h1>MarketHub</h1>
   </div>
-
-  <nav class="menu">
-    <!-- Menu principal -->
-  <app-link class="md" text="Home" linkRotas="/"></app-link>
-  <app-link class="md" text="Contato" linkRotas="/contato"></app-link>
+  <button class="menu-toggle" (click)="toggleMenu()" aria-label="Abrir/fechar menu">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="menu" [attr.data-open]="menuOpen()">
+    <app-link class="md" text="Home" linkRotas="/" [exact]="true"></app-link>
+    <app-link class="md" text="Contato" linkRotas="/contato"></app-link>
     @if(!user){
-    <app-link class="md" text="Login" linkRotas="/login"></app-link>
-    <app-link class="md" text="Cadastre-se" linkRotas="/cadastro"></app-link>
-
-    } @else { @if (user.perfil === 'VENDEDOR') {
-    <app-link
-      class="md"
-      text="Area Administrativa"
-      linkRotas="/admin/tela-produtos"
-    >
-    </app-link>
-    <app-link
-      class="md"
-      text="Relatório de produtos"
-      linkRotas="/admin/relatorio"
-    >
-    </app-link>
-    }
-    <!-- Info do usuário -->
-    <span class="user-info">
-      <!-- <img
-        [src]="user.foto || 'assets/default-avatar.png'"
-        alt="Avatar"
-        width="40"
-        height="40"
-      /> -->
-      <!-- <img src="assets/default-avatar.png" alt=""> -->
-
-      <span class="username">{{ user.nome }}</span>
-      <button class="logout-btn" (click)="logout()">Logout</button>
-    </span>
+      <app-link class="md" text="Login" linkRotas="/login"></app-link>
+      <app-link class="md" text="Cadastre-se" linkRotas="/cadastro"></app-link>
+    } @else {
+      @if (user.perfil === 'VENDEDOR') {
+        <app-link class="md" text="Area Administrativa" linkRotas="/admin/tela-produtos"></app-link>
+        <app-link class="md" text="Relatório de produtos" linkRotas="/admin/relatorio"></app-link>
+      }
+      <span class="user-info">
+        <span class="username">{{ user.nome }}</span>
+        <button class="logout-btn" (click)="logout()">Logout</button>
+      </span>
     }
   </nav>
 </header>

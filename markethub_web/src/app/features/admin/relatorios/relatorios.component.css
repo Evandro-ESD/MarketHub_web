@@ -1,6 +1,9 @@
 /* Dashboard Layout */
 .dashboard-wrapper { max-width:1200px; margin:32px auto; padding:0 24px 48px; }
-.dashboard-wrapper h1 { margin:0 0 28px; font-size:2rem; background:linear-gradient(90deg,#6a11cb,#2575fc); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.dashboard-wrapper h1 { margin:0 0 28px; font-size:2rem; background:linear-gradient(90deg,#6a11cb,#2575fc); -webkit-background-clip:text; background-clip:text; color:transparent; display:flex; flex-wrap:wrap; align-items:center; gap:12px; }
+.dashboard-wrapper h1 .usuario-nome { position:relative; font-size:.9rem; letter-spacing:.4px; padding:6px 18px 6px 34px; border-radius:40px; color:#1f2d44; background:linear-gradient(#fff,#f9fafb); box-shadow:0 4px 14px -6px rgba(0,0,0,.15), inset 0 0 0 1px #d1d8e0; display:inline-flex; align-items:center; gap:6px; font-weight:600; }
+.dashboard-wrapper h1 .usuario-nome::before { content:'👤'; position:absolute; left:10px; top:50%; transform:translateY(-50%); font-size:.85rem; background:linear-gradient(135deg,#6a11cb,#2575fc); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.dashboard-wrapper h1 .usuario-nome::after { content:''; position:absolute; inset:0; padding:1px; border-radius:inherit; background:linear-gradient(120deg,#6a11cb,#2575fc 45%,#ff9800 95%); -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite: exclude; }
 
 .cards { display:grid; gap:22px; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); margin-bottom:40px; }
 .card { background:#fff; border:1px solid #e2e6ec; padding:18px 20px; border-radius:18px; box-shadow:0 4px 16px -6px rgba(40,40,70,.15); display:flex; flex-direction:column; gap:6px; }
