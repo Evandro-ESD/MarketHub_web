@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
+// Componente legado não mais utilizado. Manter temporariamente apenas para referência.
 @Component({
-  selector: 'app-contact',
+  selector: 'app-fale-conosco',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './contact.component.html',
-  styleUrl: './contact.component.css'
+  templateUrl: './fale-conosco.component.html',
+  styleUrls: ['./fale-conosco.component.css']
 })
-export class ContactComponent {
+export class FaleConoscoComponent {
   form: FormGroup;
   enviado = false;
   carregando = false;
@@ -29,7 +30,7 @@ export class ContactComponent {
   submit() {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
     this.carregando = true;
-    setTimeout(() => {
+    setTimeout(() => { // simulação envio
       this.enviado = true;
       this.carregando = false;
       this.form.reset();

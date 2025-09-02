@@ -104,8 +104,8 @@ export class TelaProdutosComponent implements OnInit {
     }
 
     if (this.produtoEditando) {
-      // Editar produto
-      this.produtoService.updateProduto(this.produtoEditando.id, formData).subscribe({
+      // Editar produto (usa id_produto vindo do backend)
+      this.produtoService.updateProduto(this.produtoEditando.id_produto, formData).subscribe({
         next: () => {
           this.carregarProdutos();
           this.cancelarEdicao();
@@ -162,7 +162,7 @@ export class TelaProdutosComponent implements OnInit {
     }
   }
 
-  trackById(_: number, item: any) { return item.id; }
+  trackById(_: number, item: any) { return item.id_produto; }
 
   abrirModal() {
     this.modalAberto = true;
