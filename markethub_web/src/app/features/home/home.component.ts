@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from './footer/footer.component';
 import { CarouselComponent } from '../../shared/components/carousel/carousel.component';
 import { CardComponent } from '../../shared/components/card/card.component';
 import { CarrinhoService } from '../../core/services/carrinho.service';
+import { ProdutoService } from '../../core/services/produtos.service';
 
 // Interface para garantir a tipagem correta dos seus produtos
 interface Produto {
@@ -26,40 +27,36 @@ interface Produto {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   // No futuro, estes dados virão de uma chamada de API
-  produtos: Produto[] = [
-    {
-      id: 1,
-      titulo: 'Smartphone Modelo X',
-      descricao: 'Um smartphone de última geração com a melhor câmera do mercado.',
-      preco: 3999.99,
-      imageUrl: 'https://picsum.photos/300/200?random=1'
-    },
-    {
-      id: 2,
-      titulo: 'Notebook Ultra Fino',
-      descricao: 'Leve, potente e ideal para o trabalho e estudos.',
-      preco: 7500.00,
-      imageUrl: 'https://picsum.photos/300/200?random=2'
-    },
-    {
-      id: 3,
-      titulo: 'Fone de Ouvido Sem Fio',
-      descricao: 'Cancelamento de ruído ativo e som de alta fidelidade.',
-      preco: 899.90,
-      imageUrl: 'https://picsum.photos/300/200?random=3'
-    },
-    {
-      id: 4,
-      titulo: 'Smartwatch Esportivo',
-      descricao: 'Monitore suas atividades físicas com estilo e precisão.',
-      preco: 1250.50,
-      imageUrl: 'https://picsum.photos/300/200?random=4'
-    }
-  ];
+  produtos: Produto[] = [];
+  carregando = signal(true);
 
-  constructor(private carrinho: CarrinhoService){}
+  constructor(private carrinho: CarrinhoService, private produtoService: ProdutoService){}
+
+  ngOnInit(): void {
+    this.produtoService.getUltimosProdutos(10).subscribe({
+      next: (lista) => {
+        // filtrar só com foto e ordenar por id desc (já vem desc) e limitar 5
+        const base = lista.filter(p=> !!p.foto).slice(0,5);
+        this.produtos = base.map(p => {
+          let url = 'assets/img/default-avatar.png';
+          if (p.foto && typeof p.foto === 'string') {
+            url = p.foto.startsWith('http') ? p.foto : (p.foto.startsWith('uploads/') ? `http://localhost:3049/${p.foto}` : p.foto);
+          }
+          return {
+            id: p.id_produto,
+            titulo: p.nome_produto,
+            descricao: p.descricao,
+            preco: p.preco,
+            imageUrl: url
+          };
+        });
+      },
+      error: (err) => console.error('Erro carregando últimos produtos', err),
+      complete: () => this.carregando.set(false)
+    });
+  }
 
   aoAdicionarProdutoAoCarrinho(produto: Produto) {
     const mockProduto = {

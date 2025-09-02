@@ -21,6 +21,12 @@ export class AuthService {
     if (token) {
       try {
         const payload: any = JSON.parse(atob(token.split('.')[1]));
+        // Verifica expiração (payload.exp em segundos)
+        if (payload.exp && Date.now() >= payload.exp * 1000) {
+          console.info('Token expirado ao carregar, efetuando logout');
+          this.logout();
+          return;
+        }
         const user: User = {
           id_usuario: payload.id_usuario,
           nome: payload.nome,
@@ -63,7 +69,16 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    if(!token) return false;
+    try {
+      const payload: any = JSON.parse(atob(token.split('.')[1]));
+      if(payload.exp && Date.now() >= payload.exp * 1000){
+        this.logout();
+        return false;
+      }
+    } catch { return false; }
+    return true;
   }
 
   getToken(): string | null {
