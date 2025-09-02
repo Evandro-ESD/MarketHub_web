@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ProdutoService } from '../../../core/services/produtos.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { ProdutoService } from '../../../core/services/produtos.service';
 
 @Component({
   imports: [ReactiveFormsModule],
@@ -60,9 +60,7 @@ export class TelaProdutosComponent implements OnInit {
       formData.append('foto', foto);
     }
 
-
-    console.log("formData: no tela ts: ", formData.values)
-
+    // console.log("formData: no tela ts: ", formData.values)
 
     this.produtoService.createProduto(formData).subscribe({
       next: (res) => {
