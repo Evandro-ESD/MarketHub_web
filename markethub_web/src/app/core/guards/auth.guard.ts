@@ -8,7 +8,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const expectedPerfil = route.data['perfil'] as 'VENDEDOR' | 'COMPRADOR';
-    const user = this.authService.currentUser();
+  const user = this.authService.getCurrentUser();
 
     if (!this.authService.isLoggedIn()) {
       this.router.navigate(['/login']);

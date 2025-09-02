@@ -5,15 +5,23 @@
 
   <nav class="menu">
     <!-- Menu principal -->
+  <app-link class="md" text="Home" linkRotas="/"></app-link>
+  <app-link class="md" text="Contato" linkRotas="/contato"></app-link>
     @if(!user){
     <app-link class="md" text="Login" linkRotas="/login"></app-link>
-    <app-link text="Cadastre-se" linkRotas="/cadastro"></app-link>
+    <app-link class="md" text="Cadastre-se" linkRotas="/cadastro"></app-link>
 
     } @else { @if (user.perfil === 'VENDEDOR') {
     <app-link
       class="md"
-      text="Cadastro de produtos"
+      text="Area Administrativa"
       linkRotas="/admin/tela-produtos"
+    >
+    </app-link>
+    <app-link
+      class="md"
+      text="Relatório de produtos"
+      linkRotas="/admin/relatorio"
     >
     </app-link>
     }
@@ -25,7 +33,7 @@
         width="40"
         height="40"
       /> -->
-      <img src="assets/default-avatar.png" alt="">
+      <!-- <img src="assets/default-avatar.png" alt=""> -->
 
       <span class="username">{{ user.nome }}</span>
       <button class="logout-btn" (click)="logout()">Logout</button>

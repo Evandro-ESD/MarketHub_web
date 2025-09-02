@@ -1,23 +1,76 @@
-// core/services/produto.service.ts
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { BehaviorSubject, tap } from 'rxjs';
+import { environment } from '../../../enviroments/enviroments';
+import { Produtos } from '../../shared/entities/produtos.entity';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class ProdutoService {
-  private apiUrl = 'http://localhost:3049/api/produtos';
+  private http = inject(HttpClient);
+  private apiUrl = `${environment.apiBaseUrl}${environment.endpoints.produtos}`;
 
-  constructor(private http: HttpClient) {}
+  // BehaviorSubject para armazenar produtos do vendedor logado
+  private listaProdutosSubject = new BehaviorSubject<Produtos[]>([]);
+  public listaProdutos$ = this.listaProdutosSubject.asObservable();
 
-  listarProdutos(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  // Criar produto
+  createProduto(formData: FormData) {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: token ? `Bearer ${token}` : '',
+    });
+
+    return this.http.post(this.apiUrl, formData, { headers });
   }
 
-  cadastrarProduto(produto: any): Observable<any> {
-    return this.http.post(this.apiUrl, produto);
+  // Listar todos os produtos (para vendedor/comprador)
+  getAllProdutos() {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: token ? `Bearer ${token}` : '',
+    });
+
+    return this.http.get<Produtos[]>(this.apiUrl, { headers }).pipe(
+      tap((res) => console.log('RESPOSTA DO GET PRODUTOS: ', res))
+    );
   }
 
-  deletarProduto(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  // Carregar produtos do vendedor logado e atualizar BehaviorSubject
+  carregarMeusProdutos() {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: token ? `Bearer ${token}` : '',
+    });
+
+    this.http.get<Produtos[]>(`${this.apiUrl}/meus-produtos`, { headers })
+      .subscribe({
+        next: (res) => this.listaProdutosSubject.next(res),
+        error: (err) => console.error('Erro ao carregar produtos:', err),
+      });
+  }
+
+  // Retornar Observable para components se inscreverem
+  getMeusProdutos() {
+    return this.listaProdutos$;
+  }
+
+  // Atualizar produto
+  updateProduto(id: number, formData: FormData) {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: token ? `Bearer ${token}` : '',
+    });
+    return this.http.put(`${this.apiUrl}/${id}`, formData, { headers });
+  }
+
+  // Excluir produto
+  deleteProduto(id: number) {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: token ? `Bearer ${token}` : '',
+    });
+    return this.http.delete(`${this.apiUrl}/${id}`, { headers });
   }
 }

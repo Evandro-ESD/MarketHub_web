@@ -1,1 +1,54 @@
-<p>contact works!</p>
+<section class="fale-wrapper">
+	<div class="fale-header">
+		<h1>Fale Conosco</h1>
+		<p>Tem alguma dúvida, sugestão ou precisa de suporte? Envie sua mensagem.</p>
+	</div>
+
+	<form [formGroup]="form" (ngSubmit)="submit()" class="fale-form" novalidate>
+		<div class="grupo">
+			<label for="nome">Nome</label>
+			<input id="nome" type="text" formControlName="nome" placeholder="Seu nome" />
+			<small *ngIf="f['nome'].touched && f['nome'].invalid">Informe ao menos 3 caracteres.</small>
+		</div>
+
+		<div class="grupo">
+			<label for="email">Email</label>
+			<input id="email" type="email" formControlName="email" placeholder="voce@exemplo.com" />
+			<small *ngIf="f['email'].touched && f['email'].invalid">Email inválido.</small>
+		</div>
+
+		<div class="grupo">
+			<label for="assunto">Assunto</label>
+			<input id="assunto" type="text" formControlName="assunto" placeholder="Assunto" />
+			<small *ngIf="f['assunto'].touched && f['assunto'].invalid">Mínimo 5 caracteres.</small>
+		</div>
+
+		<div class="grupo full">
+			<label for="mensagem">Mensagem</label>
+			<textarea id="mensagem" rows="5" formControlName="mensagem" placeholder="Descreva sua mensagem"></textarea>
+			<small *ngIf="f['mensagem'].touched && f['mensagem'].invalid">Mínimo 10 caracteres.</small>
+		</div>
+
+		<div class="grupo checkbox full">
+			<label>
+				<input type="checkbox" formControlName="concordo" /> Concordo em ser contatado por email.
+			</label>
+			<small *ngIf="f['concordo'].touched && f['concordo'].invalid">Necessário aceitar.</small>
+		</div>
+
+		<div class="acoes">
+			<button type="submit" [disabled]="form.invalid || carregando">{{ carregando ? 'Enviando...' : 'Enviar mensagem' }}</button>
+		</div>
+
+		<div class="sucesso" *ngIf="enviado">Mensagem enviada! Responderemos em breve.</div>
+	</form>
+
+	<aside class="info-lateral">
+		<h2>Outros Canais</h2>
+		<ul>
+			<li><strong>Email:</strong> suporte&#64;markethub.com</li>
+			<li><strong>Telefone:</strong> (11) 4000-1234</li>
+			<li><strong>Horário:</strong> Seg a Sex 9h - 18h</li>
+		</ul>
+	</aside>
+</section>

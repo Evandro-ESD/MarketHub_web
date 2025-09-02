@@ -1,0 +1,162 @@
+/* Título principal */
+.titulo-estoque {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+}
+
+/* Nome do usuário estilizado */
+.user-nome {
+  position: relative;
+  color: #e67e22; /* laranja chamativo */
+  font-style: italic;
+  cursor: default;
+  transition: color 0.3s ease;
+}
+
+/* Sublinhado animado */
+.user-nome::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #f1c40f, #e67e22);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.user-nome:hover {
+  color: #d35400; /* muda cor ao passar o mouse */
+}
+
+.user-nome:hover::after {
+  transform: scaleX(1);
+}
+
+
+/* Container principal */
+.dashboard {
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  background: #f5f6fa;
+}
+
+/* Título */
+.dashboard h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* Grid responsivo */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Card do produto */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Foto do produto */
+.produto-foto {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+/* Corpo do card */
+.card-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.card-body h3 {
+  font-size: 1.3rem;
+  margin: 0;
+  color: #34495e;
+}
+
+.card-body p {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* Informações adicionais */
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+/* Rodapé com botões */
+.footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+/* Botões estilizados */
+.btn {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn:first-child {
+  background: #3498db;
+  color: white;
+}
+
+.btn:first-child:hover {
+  background: #2980b9;
+  transform: scale(1.05);
+}
+
+.btn:last-child {
+  background: #e74c3c;
+  color: white;
+}
+
+.btn:last-child:hover {
+  background: #c0392b;
+  transform: scale(1.05);
+}
+
+/* Mensagens de loading / vazio */
+.dashboard div[ngIf] {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 1rem;
+}

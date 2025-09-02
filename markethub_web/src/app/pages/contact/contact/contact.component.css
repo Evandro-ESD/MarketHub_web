@@ -1,0 +1,95 @@
+/* Layout centralizado simples */
+body, :host { --roxo:#6a11cb; --azul:#2575fc; --cinza-borda:#d8dde3; --cinza-fundo:#f6f8fa; --erro:#d93025; }
+
+.fale-wrapper {
+	max-width: 640px;
+	margin: 56px auto;
+	padding: 40px clamp(20px,4vw,48px);
+	background:#ffffff;
+	border:1px solid #e3e7ec;
+	border-radius: 20px;
+	box-shadow: 0 10px 26px -8px rgba(30,40,70,.18);
+	display:flex;
+	flex-direction:column;
+	gap:32px;
+	animation: fadeSlide .45s ease;
+}
+
+@keyframes fadeSlide { from { opacity:0; transform:translateY(12px);} to { opacity:1; transform:translateY(0);} }
+
+.fale-header { text-align:center; }
+.fale-header h1 { margin:0 0 10px; font-size:2.1rem; background:linear-gradient(90deg,var(--roxo),var(--azul)); -webkit-background-clip:text; background-clip:text; color:transparent; letter-spacing:.5px; }
+.fale-header p { margin:0; font-size:.95rem; color:#556070; line-height:1.4; }
+
+/* Form */
+.fale-form { display:flex; flex-direction:column; gap:22px; }
+.fale-form .grupo { display:flex; flex-direction:column; gap:8px; }
+.fale-form label { font-size:.72rem; font-weight:600; letter-spacing:.8px; text-transform:uppercase; color:#374151; }
+
+.fale-form input[type=text],
+.fale-form input[type=email],
+.fale-form textarea {
+	border:1px solid var(--cinza-borda);
+	background: var(--cinza-fundo);
+	padding:14px 16px;
+	border-radius:14px;
+	font-size:.95rem;
+	font-family:inherit;
+	transition:border-color .25s, background .25s, box-shadow .25s;
+}
+.fale-form textarea { resize: vertical; min-height:150px; }
+.fale-form input:focus,
+.fale-form textarea:focus { outline:none; border-color:var(--roxo); background:#fff; box-shadow:0 0 0 3px rgba(106,17,203,.18); }
+
+.grupo.checkbox label { flex-direction:row; align-items:flex-start; gap:10px; font-size:.78rem; font-weight:500; line-height:1.35; }
+.grupo.checkbox input[type=checkbox] { margin-top:3px; accent-color:var(--roxo); cursor:pointer; }
+
+/* Erros */
+.fale-form small { color:var(--erro); font-size:.7rem; font-weight:500; }
+.fale-form input.ng-invalid.ng-touched,
+.fale-form textarea.ng-invalid.ng-touched { border-color:var(--erro); background:#fff6f5; }
+.fale-form input.ng-invalid.ng-touched:focus,
+.fale-form textarea.ng-invalid.ng-touched:focus { box-shadow:0 0 0 3px rgba(217,48,37,.2); }
+
+/* Botão */
+.acoes { display:flex; justify-content:center; }
+.acoes button {
+	background:linear-gradient(90deg,var(--roxo),var(--azul));
+	border:none;
+	color:#fff;
+	padding:15px 42px;
+	font-size:.9rem;
+	font-weight:600;
+	letter-spacing:.75px;
+	border-radius:40px;
+	cursor:pointer;
+	box-shadow:0 8px 22px -6px rgba(37,117,252,.5);
+	transition:transform .25s, box-shadow .25s, filter .25s;
+	display:inline-flex; align-items:center; gap:8px;
+}
+.acoes button:hover { transform:translateY(-2px); box-shadow:0 12px 30px -8px rgba(37,117,252,.55); filter:brightness(1.05); }
+.acoes button:active { transform:translateY(0); box-shadow:0 6px 18px -6px rgba(37,117,252,.55); }
+.acoes button:disabled { opacity:.6; cursor:not-allowed; filter:grayscale(.3); box-shadow:none; }
+
+/* Sucesso */
+.sucesso { background:#e8f9ef; color:#1f6838; padding:14px 18px; border:1px solid #b5e7c6; border-radius:14px; font-size:.75rem; font-weight:600; text-align:center; }
+
+/* Info lateral convertida em rodapé interno */
+.info-lateral { background:#f5f8ff; padding:20px 22px 24px; border:1px solid #e0e6ef; border-radius:16px; display:flex; flex-direction:column; gap:12px; text-align:center; }
+.info-lateral h2 { margin:0; font-size:1rem; color:#2f4568; }
+.info-lateral ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; font-size:.78rem; }
+.info-lateral li { color:#445268; }
+.info-lateral li strong { color:#1f2d44; }
+
+/* Acessibilidade */
+.fale-form input:focus-visible,
+.fale-form textarea:focus-visible,
+.acoes button:focus-visible { outline:2px solid var(--azul); outline-offset:2px; }
+
+/* Responsivo */
+@media (max-width:520px){
+	.fale-wrapper { margin:32px 14px; padding:32px 20px; }
+	.fale-header h1 { font-size:1.9rem; }
+	.acoes button { width:100%; justify-content:center; }
+}
+

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
+import { AuthService } from '../../../core/services/auth.service';
 import { ProdutoService } from '../../../core/services/produtos.service';
 
 @Component({
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FormsModule, CommonModule],
   selector: 'app-tela-produtos',
   templateUrl: './tela-produtos.component.html',
   styleUrls: ['./tela-produtos.component.css']
@@ -11,73 +13,168 @@ import { ProdutoService } from '../../../core/services/produtos.service';
 export class TelaProdutosComponent implements OnInit {
   formProduto!: FormGroup;
   produtos: any[] = [];
-  imagemPreview: string | ArrayBuffer | null = null;
+  produtoEditando: any = null;
+  filtro: string = '';
+  loading = false;
+  skeletons = Array.from({ length: 6 });
+  previewImagem: string | null = null;
+  modalAberto = false;
+
+  get produtosFiltrados() {
+    const termo = this.filtro.trim().toLowerCase();
+    if (!termo) return this.produtos;
+    return this.produtos.filter(p => (p.nome_produto || '').toLowerCase().includes(termo));
+  }
 
   constructor(
     private fb: FormBuilder,
-    private produtoService: ProdutoService
-  ) {}
+    private produtoService: ProdutoService,
+    private auth: AuthService
+  ) { }
 
   ngOnInit() {
+    // Inicializa o formulário
     this.formProduto = this.fb.group({
-      nome: ['', [Validators.required, Validators.minLength(3)]],
+      nome_produto: ['', [Validators.required, Validators.minLength(3)]],
       descricao: ['', Validators.required],
-      preco: ['', [Validators.required, Validators.min(0.01)]],
-      estoque: ['', [Validators.required, Validators.min(0)]],
-      foto: [null] // campo para arquivo
+      preco: [0, [Validators.required, Validators.min(0.01)]],
+      estoque: [0, [Validators.required, Validators.min(0)]],
+      foto: [null],
+      id_vendedor: [null]
     });
 
-    this.carregarProdutos();
+    // Atualiza id_vendedor quando o usuário logado estiver disponível
+    this.auth.currentUser$.subscribe({
+      next: (res: any) => {
+        this.formProduto.patchValue({ id_vendedor: res?.id_usuario });
+      }
+    });
+
+  this.carregarProdutos();
   }
 
-  // Método para capturar arquivo e gerar preview
+
+  // Captura arquivo do input
   onFileChange(event: any) {
     const file = event.target.files[0];
     if (file) {
-      this.formProduto.patchValue({ foto: file }); // atualiza o FormControl
+      this.formProduto.patchValue({ foto: file });
       const reader = new FileReader();
-      reader.onload = () => this.imagemPreview = reader.result;
+      reader.onload = () => this.previewImagem = reader.result as string;
       reader.readAsDataURL(file);
     }
   }
 
-  // Submissão do formulário
-  cadastrarProduto() {
-    if (this.formProduto.invalid) return;
-
-    const formData = new FormData();
-    Object.keys(this.formProduto.controls).forEach(key => {
-      const value = this.formProduto.get(key)?.value;
-      if (value !== null) {
-        formData.append(key, value);
-      }
-    });
-
-    this.produtoService.cadastrarProduto(formData).subscribe({
-      next: () => {
-        alert('Produto cadastrado com sucesso!');
-        this.formProduto.reset();
-        this.imagemPreview = null;
-        this.carregarProdutos();
-      },
-      error: (err) => {
-        console.error(err);
-        alert('Erro ao cadastrar produto.');
-      }
-    });
+  removerImagem() {
+    this.formProduto.patchValue({ foto: null });
+    this.previewImagem = null;
+    const fileInput = document.getElementById('foto') as HTMLInputElement;
+    if (fileInput) fileInput.value = '';
   }
 
   carregarProdutos() {
-    this.produtoService.listarProdutos().subscribe({
-      next: (res) => this.produtos = res,
-      error: (err) => console.error(err)
+    this.loading = true;
+    this.produtoService.getAllProdutos().subscribe({
+      next: (produtos: any[]) => {
+        this.produtos = produtos;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar produtos:', err);
+        this.loading = false;
+      }
     });
   }
 
-  deletarProduto(id: string) {
-    this.produtoService.deletarProduto(id).subscribe({
-      next: () => this.carregarProdutos(),
-      error: (err) => console.error(err)
-    });
+
+  // Envia para o backend (cadastrar ou editar)
+  submit() {
+    if (this.formProduto.invalid) return;
+
+    const formData = new FormData();
+    formData.append('nome_produto', this.formProduto.get('nome_produto')?.value);
+    formData.append('descricao', this.formProduto.get('descricao')?.value);
+    formData.append('preco', this.formProduto.get('preco')?.value);
+    formData.append('estoque', this.formProduto.get('estoque')?.value);
+    formData.append('id_vendedor', this.formProduto.get('id_vendedor')?.value);
+
+    const foto = this.formProduto.get('foto')?.value;
+    if (foto) {
+      formData.append('foto', foto);
+    }
+
+    if (this.produtoEditando) {
+      // Editar produto (usa id_produto vindo do backend)
+      this.produtoService.updateProduto(this.produtoEditando.id_produto, formData).subscribe({
+        next: () => {
+          this.carregarProdutos();
+          this.cancelarEdicao();
+        },
+        error: (err) => {
+          console.error('Erro ao editar produto:', err);
+        }
+      });
+    } else {
+      // Cadastrar novo produto
+      this.produtoService.createProduto(formData).subscribe({
+        next: (res) => {
+          this.carregarProdutos();
+          this.formProduto.reset();
+          const fileInput = document.getElementById('foto') as HTMLInputElement;
+          if (fileInput) fileInput.value = '';
+          this.previewImagem = null;
+          alert("produto cadastrado com sucesso!");
+        },
+        error: (err) => {
+          console.error('Erro ao cadastrar produto!', err);
+        }
+      });
+    }
   }
+
+  editarProduto(produto: any) {
+    this.produtoEditando = produto;
+  this.formProduto.patchValue(produto);
+  this.previewImagem = produto.foto || null;
+    if (!this.modalAberto) {
+      this.abrirModal();
+    }
+  }
+
+  cancelarEdicao() {
+    this.produtoEditando = null;
+    this.formProduto.reset();
+    const fileInput = document.getElementById('foto') as HTMLInputElement;
+  if (fileInput) fileInput.value = '';
+  this.previewImagem = null;
+  }
+
+  excluirProduto(id: number) {
+    if (confirm('Deseja realmente excluir este produto?')) {
+      this.produtoService.deleteProduto(id).subscribe({
+        next: () => {
+          this.carregarProdutos();
+        },
+        error: (err) => {
+          console.error('Erro ao excluir produto:', err);
+        }
+      });
+    }
+  }
+
+  trackById(_: number, item: any) { return item.id_produto; }
+
+  abrirModal() {
+    this.modalAberto = true;
+    setTimeout(() => {
+      const first = document.querySelector('.modal input, .modal textarea') as HTMLElement;
+      first?.focus();
+    }, 50);
+  }
+
+  fecharModal() {
+    this.modalAberto = false;
+    this.cancelarEdicao();
+  }
+
 }
