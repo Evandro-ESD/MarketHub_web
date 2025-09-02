@@ -1,79 +1,89 @@
-/* Container do header */
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 15px 30px;
-  background-color: #6a11cb; /* Roxo degradê pode ser adicionado via linear-gradient */
-  color: #fff;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  justify-content: space-between;
+  background-color: #fff159; /* Amarelo Mercado Livre */
+  padding: 0.8rem 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Logo */
-.header .logo h1 {
-  font-size: 24px;
-  font-weight: bold;
-  margin: 0;
+.logo img {
+  max-height: 45px;
   cursor: pointer;
 }
 
-/* Menu de navegação */
-.header .menu {
+.search-bar {
+  flex: 1;
+  display: flex;
+  margin: 0 2rem;
+  max-width: 600px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 4px 0 0 4px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.search-bar button {
+  background: #3483fa; /* Azul Mercado Livre */
+  border: none;
+  padding: 0 1rem;
+  color: white;
+  font-size: 1rem;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+
+.menu {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 1rem;
 }
 
-/* Links do menu */
-.header .menu app-link {
-  text-decoration: none;
-  color: #fff;
+.menu app-link,
+.menu .logout-btn {
+  font-size: 0.9rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
   font-weight: 500;
-  transition: color 0.3s;
 }
 
-.header .menu app-link:hover {
-  color: #ffd700; /* Dourado ao passar o mouse */
-}
-
-/* Informação do usuário */
 .user-info {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-left: 20px;
+  gap: 0.5rem;
 }
 
-/* Avatar do usuário */
-.user-info .avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #fff;
+.username {
+  font-weight: 600;
+  color: #333;
+}
+.cart {
+  position: relative;
 }
 
-/* Nome do usuário */
-.user-info .username {
-  font-weight: 500;
-  font-size: 14px;
-}
-
-/* Botão de logout */
-.logout-btn {
-  background-color: #ff4b5c;
-  color: #fff;
+.cart-btn {
+  background: none;
   border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
+  font-size: 1.6rem;
   cursor: pointer;
-  font-size: 13px;
-  transition: background-color 0.3s;
+  position: relative;
 }
 
-.logout-btn:hover {
-  background-color: #ff1e2d;
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: #3483fa; /* azul Mercado Livre */
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 50%;
 }

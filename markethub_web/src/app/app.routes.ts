@@ -8,7 +8,7 @@ export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    title: 'MarkettHub',
+    title: 'MarketHub',
   },
   {
     path: 'login',
