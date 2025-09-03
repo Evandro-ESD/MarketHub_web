@@ -1,0 +1,25 @@
+<section class="grid-login">
+  <span *ngFor="let s of squares"></span>
+  <div class="signin">
+    <div class="content">
+      <h2>Login</h2>
+      <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="inputBx">
+          <input type="text" formControlName="nome" required autocomplete="username" />
+          <i>Username</i>
+        </div>
+        <div class="inputBx">
+          <input type="password" formControlName="senha" required autocomplete="current-password" />
+          <i>Password</i>
+        </div>
+        <div class="links">
+          <a routerLink="/recuperar-senha">Recuperar Senha</a>
+          <a routerLink="/cadastro">Cadastrar</a>
+        </div>
+        <div class="inputBx">
+          <input type="submit" [value]="loading ? '...' : 'Login'" [disabled]="loading || loginForm.invalid" />
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,33 @@
+<section class="grid-login">
+  <span *ngFor="let s of squares"></span>
+  <div class="signin">
+    <div class="content">
+      <h2>Cadastro</h2>
+      <form class="form" [formGroup]="formCadastro" (ngSubmit)="cadastrar()" novalidate>
+        <div class="inputBx">
+          <input type="text" formControlName="nome" required autocomplete="off" />
+          <i>Username</i>
+        </div>
+        <div class="inputBx password-box">
+          <input [type]="showPassword ? 'text' : 'password'" formControlName="senha" required autocomplete="new-password" />
+          <i>Password</i>
+          <button type="button" class="toggle-pass" (click)="togglePassword()">{{ showPassword ? '🙈' : '👁️' }}</button>
+        </div>
+        <div class="inputBx">
+          <select formControlName="perfil" required>
+            <option value="COMPRADOR">Usuário</option>
+            <option value="VENDEDOR">Vendedor</option>
+          </select>
+          <i>Perfil</i>
+        </div>
+        <div class="links">
+          <a routerLink="/login">Já tenho conta</a>
+          <a (click)="limparFormulario()">Limpar</a>
+        </div>
+        <div class="inputBx">
+          <input type="submit" [value]="loading ? '...' : 'Cadastrar'" [disabled]="loading || formCadastro.invalid" />
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

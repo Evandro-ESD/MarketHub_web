@@ -1,0 +1,125 @@
+:host {
+  --carousel-height: 500px;
+  --primary-color: #3498db;
+  --primary-color-dark: #2980b9;
+}
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  height: var(--carousel-height);
+  margin: 40px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.slides-wrapper {
+  position: relative;
+  width: 100%;
+  height: var(--carousel-height);
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.slide-background {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(3px) brightness(0.6);
+  transform: scale(1.1);
+  position: absolute;
+  z-index: -1;
+}
+
+.slide-content {
+  color: white;
+  padding: 0 80px;
+  max-width: 50%;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.slide-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+.slide-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.slide-price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2ecc71;
+  margin-bottom: 32px;
+}
+
+.slide-cta {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.slide-cta:hover {
+  background-color: var(--primary-color-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  border: none;
+  font-size: 2rem;
+  padding: 10px 15px;
+  cursor: pointer;
+  z-index: 10;
+  transition: background-color 0.3s ease;
+  border-radius: 8px;
+}
+
+.nav-button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.nav-button.prev {
+  left: 15px;
+}
+
+.nav-button.next {
+  right: 15px;
+}
