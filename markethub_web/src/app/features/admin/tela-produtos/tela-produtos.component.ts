@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } 
 import { AuthService } from '../../../core/services/auth.service';
 import { ProdutoService } from '../../../core/services/produtos.service';
 import { AlertService } from '../../../shared/services/alert.service';
+import { ConfirmService } from '../../../shared/services/confirm.service';
 
 @Component({
   imports: [ReactiveFormsModule, FormsModule, CommonModule],
@@ -29,9 +30,10 @@ export class TelaProdutosComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private produtoService: ProdutoService,
+  private produtoService: ProdutoService,
   private auth: AuthService,
-  private alerts: AlertService
+  private alerts: AlertService,
+  private confirm: ConfirmService
   ) { }
 
   ngOnInit() {
@@ -49,10 +51,12 @@ export class TelaProdutosComponent implements OnInit {
     this.auth.currentUser$.subscribe({
       next: (res: any) => {
         this.formProduto.patchValue({ id_vendedor: res?.id_usuario });
+        // Após ter o usuário, carregar apenas os produtos dele
+        if (res?.id_usuario) {
+          this.carregarMeusProdutos();
+        }
       }
     });
-
-    this.carregarProdutos();
   }
 
 
@@ -74,40 +78,22 @@ export class TelaProdutosComponent implements OnInit {
     if (fileInput) fileInput.value = '';
   }
 
-  carregarProdutos() {
+  carregarMeusProdutos() {
     this.loading = true;
-    this.produtoService.getAllProdutos().subscribe({
-      next: (produtos: any[]) => {
-        // Ajusta o caminho das imagens
-        produtos.forEach(produto => {
-          if (!produto.foto) {
-            // Exibe uma imagem padrão
-            produto.foto = 'path/to/default-image.jpg';
-          } else if (typeof produto.foto === 'string' && !produto.foto.startsWith('http')) {
-            // Reconstrói o caminho completo
-            produto.foto = `http://localhost:3049/uploads/produtos/${produto.foto}`;
-          }
-        });
-
-        this.produtos = produtos;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Erro ao carregar produtos:', err);
-        this.loading = false;
-      }
+    this.produtoService.carregarMeusProdutos();
+    this.produtoService.getMeusProdutos().subscribe({
+      next: (lista) => { this.produtos = lista; this.loading = false; },
+      error: (err) => { console.error('Erro ao obter meus produtos', err); this.loading = false; }
     });
   }
 
 
   // Envia para o backend (cadastrar ou editar)
-  submit() {
+  async submit() {
     if (this.formProduto.invalid) return;
-
-  // Confirmação antes de prosseguir
-  const mensagemConfirmacao = this.produtoEditando ? 'Deseja realmente salvar as alterações deste produto?' : 'Deseja realmente cadastrar este novo produto?';
-  const confirmado = confirm(mensagemConfirmacao);
-  if (!confirmado) return; // Usuário cancelou
+    const mensagemConfirmacao = this.produtoEditando ? 'Deseja realmente salvar as alterações deste produto?' : 'Deseja realmente cadastrar este novo produto?';
+    const ok = await this.confirm.ask({ message: mensagemConfirmacao, title: this.produtoEditando ? 'Confirmar Edição' : 'Confirmar Cadastro' });
+    if(!ok) return;
 
     const formData = new FormData();
     formData.append('nome_produto', this.formProduto.get('nome_produto')?.value);
@@ -127,7 +113,7 @@ export class TelaProdutosComponent implements OnInit {
     if (this.produtoEditando) {
       this.produtoService.updateProduto(this.produtoEditando.id_produto, formData).subscribe({
         next: () => {
-          this.carregarProdutos();
+          this.carregarMeusProdutos();
           this.alerts.success('Produto atualizado com sucesso!');
           this.fecharModal();
         },
@@ -139,7 +125,7 @@ export class TelaProdutosComponent implements OnInit {
     } else {
       this.produtoService.createProduto(formData).subscribe({
         next: () => {
-          this.carregarProdutos();
+          this.carregarMeusProdutos();
           this.alerts.success('Produto cadastrado com sucesso!');
           this.fecharModal();
         },
@@ -153,8 +139,8 @@ export class TelaProdutosComponent implements OnInit {
 
   editarProduto(produto: any) {
     this.produtoEditando = produto;
-    this.formProduto.patchValue(produto);
-    this.previewImagem = produto.foto || null;
+  this.formProduto.patchValue(produto);
+  this.previewImagem = produto.foto || null;
     if (!this.modalAberto) {
       this.abrirModal();
     }
@@ -164,21 +150,34 @@ export class TelaProdutosComponent implements OnInit {
     this.produtoEditando = null;
     this.formProduto.reset();
     const fileInput = document.getElementById('foto') as HTMLInputElement;
-    if (fileInput) fileInput.value = '';
-    this.previewImagem = null;
+  if (fileInput) fileInput.value = '';
+  this.previewImagem = null;
   }
 
-  excluirProduto(id: number) {
-    if (confirm('Deseja realmente excluir este produto?')) {
-      this.produtoService.deleteProduto(id).subscribe({
-        next: () => {
-          this.carregarProdutos();
-        },
-        error: (err) => {
-          console.error('Erro ao excluir produto:', err);
+  async excluirProduto(id_produto: number) {
+    if (!id_produto) return;
+    const ok = await this.confirm.ask({
+      message: 'Deseja realmente excluir este produto? Esta ação não pode ser desfeita.',
+      title: 'Excluir Produto',
+      confirmText: 'Excluir',
+      danger: true
+    });
+    if(!ok) return;
+    this.produtoService.deleteProduto(id_produto).subscribe({
+      next: () => {
+        // Se estava editando este, cancelar edição
+        if (this.produtoEditando?.id_produto === id_produto) {
+          this.cancelarEdicao();
         }
-      });
-    }
+        this.alerts.success('Produto excluído com sucesso');
+  this.carregarMeusProdutos();
+      },
+      error: (err) => {
+        console.error('Erro ao excluir produto:', err);
+        const msg = err.error?.message || 'Erro ao excluir produto';
+        this.alerts.error(msg);
+      }
+    });
   }
 
   trackById(_: number, item: any) { return item.id_produto; }

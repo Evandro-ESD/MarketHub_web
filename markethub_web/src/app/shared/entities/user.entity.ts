@@ -4,7 +4,6 @@ export interface User {
   nome: string;
   senha?: string;       // opcional, não trafega no front após login
   perfil: 'VENDEDOR' | 'COMPRADOR';
-  foto?: string;        // caminho para a foto
   authtoken?: string;   // token JWT
 }
 
@@ -15,5 +14,4 @@ export interface LoginResponse {
   perfil: 'VENDEDOR' | 'COMPRADOR';
   nome: string;
   // email?: string;  // se o backend mandar
-  foto?: string;
 }
