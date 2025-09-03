@@ -39,8 +39,8 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.produtoService.getUltimosProdutos(10).subscribe({
       next: (lista) => {
-        const base = lista.slice(0,5); // já vem ordenado por id desc do backend
-  this.produtos = base.map(p => {
+        const base = lista.slice(0, 5); // já vem ordenado por id desc do backend
+        this.produtos = base.map(p => {
           let url = 'assets/img/default-avatar.png';
           if (p.foto && typeof p.foto === 'string') {
             if (p.foto.startsWith('http')) url = p.foto;
@@ -49,26 +49,26 @@ export class HomeComponent implements OnInit {
           }
           return { id: p.id_produto, titulo: p.nome_produto, descricao: p.descricao, preco: p.preco, imageUrl: url };
         });
-  this.produtosFiltrados = [...this.produtos];
+        this.produtosFiltrados = [...this.produtos];
       },
       error: (err) => console.error('Erro carregando últimos produtos', err),
       complete: () => this.carregando.set(false)
     });
 
-
-    ////////////////////////////////////
     this.mostrarTodosProdutosDisponiveis()
-    ////////////////////////////////////
 
+  }
 
+  trackById(index: number, produto: Produto) {
+    return produto.id;
   }
 
   mostrarTodosProdutosDisponiveis() {
     this.produtoService.getAllProdutos().subscribe({
       next: (todosProdutos) => {
         //  const base = todosProdutos.slice(0, 5); // já vem ordenado por id desc do backend
-         const base = todosProdutos
-        this.todosOsProdutos = base.map(p => {
+        const base = todosProdutos
+        this.produtosFiltrados = base.map(p => {
           let url = 'assets/img/default-avatar.png';
           if (p.foto && typeof p.foto === 'string') {
             if (p.foto.startsWith('http')) url = p.foto;
@@ -102,26 +102,26 @@ export class HomeComponent implements OnInit {
   }
 
   // Sanitiza entrada para mitigar XSS/HTML Injection no front
-  private sanitizeInput(valor: string){
+  private sanitizeInput(valor: string) {
     // Remove tags HTML
-    let limpo = valor.replace(/<[^>]*>/g,'');
+    let limpo = valor.replace(/<[^>]*>/g, '');
     // Remove possíveis injeções SQL simples (palavras reservadas em sequência)
-    limpo = limpo.replace(/(union|select|insert|update|delete|drop|--|#)/gi,'');
+    limpo = limpo.replace(/(union|select|insert|update|delete|drop|--|#)/gi, '');
     // Limita tamanho
-    return limpo.slice(0,60);
+    return limpo.slice(0, 60);
   }
 
-  onBuscar(change: Event){
+  onBuscar(change: Event) {
     const target = change.target as HTMLInputElement;
     this.termoBusca = this.sanitizeInput(target.value.trim());
-    if(!this.termoBusca){
+    if (!this.termoBusca) {
       this.produtosFiltrados = [...this.produtos];
       return;
     }
     const termoLower = this.termoBusca.toLowerCase();
     this.produtosFiltrados = this.produtos.filter(p => (
-      (p.titulo+'' ).toLowerCase().includes(termoLower) ||
-      (p.descricao+'').toLowerCase().includes(termoLower)
+      (p.titulo + '').toLowerCase().includes(termoLower) ||
+      (p.descricao + '').toLowerCase().includes(termoLower)
     ));
   }
 }

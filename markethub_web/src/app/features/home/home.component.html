@@ -1,7 +1,8 @@
 <div class="container">
     <div class="top-search-bar">
         <div class="busca-wrapper">
-            <input type="text" [value]="termoBusca" (input)="onBuscar($event)" placeholder="Buscar produtos..." aria-label="Buscar produtos" />
+            <input type="text" [value]="termoBusca" (input)="onBuscar($event)" placeholder="Buscar produtos..."
+                aria-label="Buscar produtos" />
         </div>
     </div>
     <!-- HERO / INTRO -->
@@ -11,17 +12,19 @@
                 Tudo que você procura em um só lugar <span class="gradient-text">Inteligente</span>
             </h1>
             <p class="hero-sub">
-                Explore novidades, encontre ofertas e adicione rapidamente ao carrinho. Tudo com uma experiência leve e responsiva.
+                Explore novidades, encontre ofertas e adicione rapidamente ao carrinho. Tudo com uma experiência leve e
+                responsiva.
             </p>
             <div class="hero-cta">
                 <a href="#produtos" class="btn-primaria">Ver Produtos</a>
-            <button class="btn-secundaria" (click)="scrollTopo()">Topo</button>
+                <button class="btn-secundaria" (click)="scrollTopo()">Topo</button>
             </div>
         </div>
         <div class="hero-aside">
             <div class="stats">
                 <div class="stat">
-                    <span class="stat-num" aria-label="Produtos recentes">{{ carregando() ? '...' : produtos.length }}</span>
+                    <span class="stat-num" aria-label="Produtos recentes">{{ carregando() ? '...' : produtos.length
+                        }}</span>
                     <span class="stat-label">Novidades</span>
                 </div>
                 <div class="stat">
@@ -40,12 +43,22 @@
     <div class="main">
         <!-- Carousel / Destaques -->
         <div class="container-carousel" aria-label="Carrossel de destaques">
-            @if (carregando()) {
-                <div class="carousel-skeleton" role="status" aria-live="polite">Carregando novidades...</div>
-            } @else {
-                <app-carousel [produtos]="produtos" [limite]="5" (adicionarAoCarrinho)="aoAdicionarProdutoAoCarrinho($event)">
+
+
+
+            <div *ngIf="carregando(); else carouselContent" class="carousel-skeleton" role="status" aria-live="polite">
+                Carregando novidades...
+            </div>
+
+            <ng-template #carouselContent>
+                <app-carousel [produtos]="produtos" [limite]="5"
+                    (adicionarAoCarrinho)="aoAdicionarProdutoAoCarrinho($event)">
                 </app-carousel>
-            }
+            </ng-template>
+
+
+
+
         </div>
 
         <!-- Chips de categorias (placeholder) -->
@@ -60,17 +73,19 @@
 
         <!-- Produtos -->
         <div id="produtos" class="produtos-container">
-                        <div class="produtos-header">
-                            <h2 class="produtos-titulo">Nossos Produtos</h2>
-                            <div class="divider"></div>
-                        </div>
+            <div class="produtos-header">
+                <h2 class="produtos-titulo">Nossos Produtos</h2>
+                <div class="divider"></div>
+            </div>
             <div class="produtos-grid">
                 @if (carregando()) {
-                    <div class="grid-skeleton" role="status" aria-live="polite">Carregando produtos...</div>
+                <div class="grid-skeleton" role="status" aria-live="polite">Carregando produtos...</div>
                 } @else {
-                    @for (produto of produtosFiltrados; track produto.id) {
-                        <app-card [imageUrl]="produto.imageUrl" [titulo]="produto.titulo" [descricao]="produto.descricao" [preco]="produto.preco" (adicionarAoCarrinho)="aoAdicionarProdutoAoCarrinho(produto)" />
-                    }
+                <ng-container *ngFor="let produto of produtosFiltrados; trackBy: trackById">
+                    <app-card [imageUrl]="produto.imageUrl" [titulo]="produto.titulo" [descricao]="produto.descricao"
+                        [preco]="produto.preco" (adicionarAoCarrinho)="aoAdicionarProdutoAoCarrinho(produto)" />
+                </ng-container>
+
                 }
             </div>
         </div>
