@@ -120,10 +120,6 @@ export class TelaProdutosComponent implements OnInit {
         .updateProduto(this.produtoEditando.id_produto, formData)
         .subscribe({
           next: () => {
-
-
-
-
             this.carregarProdutos();
             this.alerts.success('Produto atualizado com sucesso!');
             this.fecharModal();
@@ -170,9 +166,6 @@ export class TelaProdutosComponent implements OnInit {
         next: () => {
           console.log("IDDDD",id)
           this.carregarProdutos()
-
-
-
         },
         error: (err) => console.error('Erro ao excluir produto:', err),
       });

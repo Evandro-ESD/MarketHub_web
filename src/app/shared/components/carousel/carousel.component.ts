@@ -76,11 +76,6 @@ export class CarouselComponent implements OnChanges, OnInit, OnDestroy {
     this.reiniciarRotacao();
   }
 
-  selecionarProduto(index: number): void {
-    this.selectedIndex = index;
-    this.reiniciarRotacao();
-  }
-
   onAdicionarAoCarrinho(produto: Produto): void {
     this.adicionarAoCarrinho.emit(produto);
   }
