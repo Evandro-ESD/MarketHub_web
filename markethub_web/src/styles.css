@@ -3,3 +3,11 @@ html, body { height: 100%; }
 body { margin:0; font-family: 'Inter', system-ui, Avenir, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 body { background:#08080d; }
 * { box-sizing: border-box; }
+
+/* Modo acessibilidade preto e branco */
+body.grayscale-mode {
+	filter: grayscale(100%) contrast(1.05);
+}
+body.grayscale-mode img, body.grayscale-mode video, body.grayscale-mode picture, body.grayscale-mode svg {
+	filter: grayscale(100%) contrast(1.05) !important;
+}

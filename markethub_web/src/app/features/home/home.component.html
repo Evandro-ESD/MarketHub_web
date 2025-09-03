@@ -1,9 +1,10 @@
 <div class="container">
-    <div class="top-search-bar">
+        <div class="top-search-bar">
         <div class="busca-wrapper">
             <input type="text" [value]="termoBusca" (input)="onBuscar($event)" placeholder="Buscar produtos..."
                 aria-label="Buscar produtos" />
         </div>
+                            <!-- Botão de acessibilidade migrado para versão flutuante (ver fim do template) -->
     </div>
     <!-- HERO / INTRO -->
     <section class="hero">
@@ -91,4 +92,16 @@
         </div>
     </div>
     <app-footer />
+
+    <!-- Botão flutuante de acessibilidade -->
+    <button type="button"
+            class="btn-acess-floating"
+            (click)="toggleAcessibilidadePB()"
+            [attr.aria-pressed]="modoAcessibilidadePB()"
+            aria-label="Alternar modo preto e branco"
+            title="Alternar modo preto e branco">
+        <i class="fa-solid fa-universal-access" aria-hidden="true"></i>
+        <span class="sr-only" *ngIf="!modoAcessibilidadePB(); else voltaCor">Ativar modo preto e branco</span>
+        <ng-template #voltaCor><span class="sr-only">Voltar para cores padrão</span></ng-template>
+    </button>
 </div>

@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit {
   produtosFiltrados: Produto[] = [];
   termoBusca = '';
   carregando = signal(true);
+  modoAcessibilidadePB = signal(false);
 
   constructor(private carrinho: CarrinhoService, private produtoService: ProdutoService) { }
 
@@ -57,6 +58,12 @@ export class HomeComponent implements OnInit {
 
     this.mostrarTodosProdutosDisponiveis()
 
+  }
+
+  toggleAcessibilidadePB(){
+    this.modoAcessibilidadePB.update(v => !v);
+    const body = document.body;
+    if(this.modoAcessibilidadePB()) body.classList.add('grayscale-mode'); else body.classList.remove('grayscale-mode');
   }
 
   trackById(index: number, produto: Produto) {
