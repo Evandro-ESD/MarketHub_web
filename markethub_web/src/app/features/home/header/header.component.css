@@ -23,7 +23,10 @@
 .header { --clr-text:#eef6ff; --clr-text-muted:#b9cfde; }
 
 /* Logo */
-.logo h1 { margin:0; font-size:clamp(1.05rem,1.85vw,1.65rem); font-weight:800; letter-spacing:.6px; color:var(--clr-text); display:flex; align-items:center; gap:10px; background:linear-gradient(90deg,#fff,#b3d4ff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.logo h1 { margin:0; font-size:clamp(1.05rem,1.85vw,1.65rem); font-weight:800; letter-spacing:.6px; display:flex; align-items:center; gap:10px; }
+.brand-word { font-weight:800; letter-spacing:.6px; line-height:1; }
+.brand-word.market { background:linear-gradient(90deg,#ffffff,#b3d4ff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.brand-word.hub { background:linear-gradient(90deg,#ff8a2d,#ffb366); -webkit-background-clip:text; background-clip:text; color:transparent; margin-left:2px; }
 .logo h1::before { display:none; }
 .logo-img { width:56px; height:56px; object-fit:contain; filter:drop-shadow(0 2px 8px rgba(0,0,0,.5)); transition:.3s; }
 

@@ -1,3 +1,15 @@
+:host-context(.daltonic) .container { background:#ffffff !important; }
+:host-context(.daltonic) .hero-title { background:linear-gradient(90deg,#005fcc,#005fcc,#ffb300) !important; -webkit-background-clip:text; background-clip:text; color:transparent; }
+:host-context(.daltonic) .produtos-titulo { background:linear-gradient(90deg,#005fcc,#ffb300) !important; -webkit-background-clip:text; background-clip:text; color:transparent; }
+:host-context(.daltonic) .chip { background:#f2f4f6 !important; border-color:#cfd5da !important; color:#1a1a1a !important; box-shadow:none !important; }
+:host-context(.daltonic) .chip.ativo { background:#005fcc !important; border-color:#005fcc !important; color:#fff !important; }
+:host-context(.daltonic) .btn-primaria { background:#005fcc !important; box-shadow:none !important; }
+:host-context(.daltonic) .btn-primaria:hover { filter:brightness(1.05) !important; }
+:host-context(.daltonic) .btn-secundaria { background:#f2f4f6 !important; border-color:#cfd5da !important; color:#1a1a1a !important; }
+:host-context(.daltonic) .stat-num { background:none !important; color:#005fcc !important; }
+:host-context(.daltonic) .card-price { color:#005fcc !important; }
+:host-context(.daltonic) .divider { background:linear-gradient(90deg,#005fcc,#ffb300) !important; }
+:host-context(.daltonic) .busca-wrapper input:focus { border-color:#005fcc !important; box-shadow:0 0 0 3px #005fcc33 !important; }
 /* Layout base */
 .container { 
     min-height: 100dvh; 
@@ -5,6 +17,28 @@
     background: linear-gradient(180deg,#f8fbff 0%, #f3f7fb 40%, #eef2f6 100%);
 }
 .top-search-bar { width:100%; max-width:1450px; margin:0 auto; padding: .75rem clamp(.8rem,2vw,2rem) 0; display:flex; justify-content:flex-end; }
+.btn-acess { margin-left:1rem; background:#244360; color:#fff; border:1px solid #315274; padding:.55rem .9rem; font-size:.7rem; font-weight:600; letter-spacing:.5px; border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; gap:.4rem; box-shadow:0 2px 6px -2px rgba(0,0,0,.4); transition:.3s; }
+.btn-acess i { font-size:.9rem; line-height:1; }
+
+/* Botão flutuante de acessibilidade */
+/* Versão sólida (sem transparência/glass) */
+.btn-acess-floating { position:fixed; right:18px; bottom:18px; width:54px; height:54px; display:flex; align-items:center; justify-content:center; border-radius:18px; background:#0d6efd; border:1px solid #0b5ed7; color:#fff; cursor:pointer; box-shadow:0 6px 18px -4px rgba(0,0,0,.45), 0 2px 6px -2px rgba(0,0,0,.35); transition:.35s; z-index:1500; }
+.btn-acess-floating:hover { background:#1877ff; box-shadow:0 10px 26px -6px rgba(0,0,0,.55); transform:translateY(-3px); }
+.btn-acess-floating:active { background:#0b5ed7; transform:translateY(-1px); box-shadow:0 4px 14px -4px rgba(0,0,0,.55); }
+.btn-acess-floating[aria-pressed='true'] { background:#ff8a2d; border-color:#ff8a2d; }
+.btn-acess-floating[aria-pressed='true']:hover { background:#ff9e52; }
+.btn-acess-floating i { font-size:1.2rem; filter:drop-shadow(0 2px 4px rgba(0,0,0,.45)); }
+.btn-acess-floating:focus-visible { outline:2px solid #ff8a2d; outline-offset:4px; }
+
+/* Modo P&B ativo: invertido leve para diferenciação */
+body.grayscale-mode .btn-acess-floating { filter:grayscale(100%) contrast(1.1); }
+body.grayscale-mode .btn-acess-floating[aria-pressed='true'] { filter:grayscale(100%) contrast(1.15); }
+
+/* Acessibilidade sr-only */
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+.btn-acess:hover { background:#2d5a78; }
+.btn-acess:active { transform:translateY(1px); }
+.btn-acess[aria-pressed='true'] { background:#0d6efd; border-color:#0d6efd; box-shadow:0 0 0 3px #0d6efd44; }
 .main { flex:1; width:100%; max-width:1450px; margin:0 auto; padding: clamp(0.5rem,1.5vw,1.5rem) clamp(0.8rem,2vw,2rem) 3rem; }
 
 /* HERO */
@@ -87,3 +121,4 @@
     .btn-primaria:hover, .btn-primaria:active { transform:none; box-shadow:0 4px 18px -4px rgba(13,110,253,.45); }
     .chip:active { transform:none; }
 }
+
