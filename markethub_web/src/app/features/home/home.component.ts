@@ -30,6 +30,8 @@ interface Produto {
 export class HomeComponent implements OnInit {
   // No futuro, estes dados virão de uma chamada de API
   produtos: Produto[] = [];
+  produtosFiltrados: Produto[] = [];
+  termoBusca = '';
   carregando = signal(true);
 
   constructor(private carrinho: CarrinhoService, private produtoService: ProdutoService){}
@@ -38,7 +40,7 @@ export class HomeComponent implements OnInit {
     this.produtoService.getUltimosProdutos(10).subscribe({
       next: (lista) => {
         const base = lista.slice(0,5); // já vem ordenado por id desc do backend
-        this.produtos = base.map(p => {
+  this.produtos = base.map(p => {
           let url = 'assets/img/default-avatar.png';
           if (p.foto && typeof p.foto === 'string') {
             if (p.foto.startsWith('http')) url = p.foto; 
@@ -47,6 +49,7 @@ export class HomeComponent implements OnInit {
           }
           return { id: p.id_produto, titulo: p.nome_produto, descricao: p.descricao, preco: p.preco, imageUrl: url };
         });
+  this.produtosFiltrados = [...this.produtos];
       },
       error: (err) => console.error('Erro carregando últimos produtos', err),
       complete: () => this.carregando.set(false)
@@ -70,5 +73,29 @@ export class HomeComponent implements OnInit {
     if(typeof window !== 'undefined'){
       window.scrollTo({top:0, behavior:'smooth'});
     }
+  }
+
+  // Sanitiza entrada para mitigar XSS/HTML Injection no front
+  private sanitizeInput(valor: string){
+    // Remove tags HTML
+    let limpo = valor.replace(/<[^>]*>/g,'');
+    // Remove possíveis injeções SQL simples (palavras reservadas em sequência)
+    limpo = limpo.replace(/(union|select|insert|update|delete|drop|--|#)/gi,'');
+    // Limita tamanho
+    return limpo.slice(0,60);
+  }
+
+  onBuscar(change: Event){
+    const target = change.target as HTMLInputElement;
+    this.termoBusca = this.sanitizeInput(target.value.trim());
+    if(!this.termoBusca){
+      this.produtosFiltrados = [...this.produtos];
+      return;
+    }
+    const termoLower = this.termoBusca.toLowerCase();
+    this.produtosFiltrados = this.produtos.filter(p => (
+      (p.titulo+'' ).toLowerCase().includes(termoLower) ||
+      (p.descricao+'').toLowerCase().includes(termoLower)
+    ));
   }
 }

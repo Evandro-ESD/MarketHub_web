@@ -1,4 +1,9 @@
 <div class="container">
+    <div class="top-search-bar">
+        <div class="busca-wrapper">
+            <input type="text" [value]="termoBusca" (input)="onBuscar($event)" placeholder="Buscar produtos..." aria-label="Buscar produtos" />
+        </div>
+    </div>
     <!-- HERO / INTRO -->
     <section class="hero">
         <div class="hero-content">
@@ -55,15 +60,15 @@
 
         <!-- Produtos -->
         <div id="produtos" class="produtos-container">
-            <div class="produtos-header">
-                <h2 class="produtos-titulo">Nossos Produtos</h2>
-                <div class="divider"></div>
-            </div>
+                        <div class="produtos-header">
+                            <h2 class="produtos-titulo">Nossos Produtos</h2>
+                            <div class="divider"></div>
+                        </div>
             <div class="produtos-grid">
                 @if (carregando()) {
                     <div class="grid-skeleton" role="status" aria-live="polite">Carregando produtos...</div>
                 } @else {
-                    @for (produto of produtos; track produto.id) {
+                    @for (produto of produtosFiltrados; track produto.id) {
                         <app-card [imageUrl]="produto.imageUrl" [titulo]="produto.titulo" [descricao]="produto.descricao" [preco]="produto.preco" (adicionarAoCarrinho)="aoAdicionarProdutoAoCarrinho(produto)" />
                     }
                 }
