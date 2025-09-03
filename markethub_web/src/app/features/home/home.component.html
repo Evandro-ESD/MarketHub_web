@@ -63,8 +63,8 @@
                 @if (carregando()) {
                     <div class="grid-skeleton" role="status" aria-live="polite">Carregando produtos...</div>
                 } @else {
-                    @for (produto of produtos; track produto.id) {
-                        <app-card [imageUrl]="produto.imageUrl" [titulo]="produto.titulo" [descricao]="produto.descricao" [preco]="produto.preco" (adicionarAoCarrinho)="aoAdicionarProdutoAoCarrinho(produto)" />
+                    @for (produto of todosOsProdutos; track todosOsProdutos) {
+                        <app-card [imageUrl]="produto.imageUrl" [titulo]="produto.titulo" [descricao]="produto.descricao" [preco]="produto.preco" (adicionarAoCarrinho)="mostrarTodosProdutosDisponiveis()" />
                     }
                 }
             </div>

@@ -52,6 +52,13 @@ export class HomeComponent implements OnInit {
       error: (err) => console.error('Erro carregando últimos produtos', err),
       complete: () => this.carregando.set(false)
     });
+
+
+    ////////////////////////////////////
+    this.mostrarTodosProdutosDisponiveis()
+    ////////////////////////////////////
+
+
   }
 
   mostrarTodosProdutosDisponiveis() {
@@ -59,7 +66,7 @@ export class HomeComponent implements OnInit {
       next: (todosProdutos) => {
         //  const base = todosProdutos.slice(0, 5); // já vem ordenado por id desc do backend
          const base = todosProdutos
-        this.produtos = base.map(p => {
+        this.todosOsProdutos = base.map(p => {
           let url = 'assets/img/default-avatar.png';
           if (p.foto && typeof p.foto === 'string') {
             if (p.foto.startsWith('http')) url = p.foto;
