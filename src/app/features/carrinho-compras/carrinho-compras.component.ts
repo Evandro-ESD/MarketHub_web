@@ -1,16 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { environment } from '../../../enviroments/enviroments';
 import { CarrinhoService } from '../../core/services/carrinho.service';
 import { AlertService } from '../../shared/services/alert.service';
 
-
 @Component({
   selector: 'app-carrinho-compras',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './carrinho-compras.component.html',
   styleUrl: './carrinho-compras.component.css'
 })
