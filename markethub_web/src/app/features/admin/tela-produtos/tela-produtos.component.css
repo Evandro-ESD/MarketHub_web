@@ -1,3 +1,6 @@
+/* Fundo suave para área administrativa */
+:host { display:block; background:linear-gradient(135deg,#f5f9ff 0%, #eef7f9 45%, #e9f4f2 100%); min-height:100dvh; padding-top:18px; }
+.tela-produtos-wrapper { backdrop-filter: blur(3px); }
 .form-produto {
   font-family: "Segoe UI", sans-serif;
   background: linear-gradient(135deg, #0f4c5c, #2a9d8f);
@@ -170,7 +173,7 @@ h2 {
 }
 
 /* NOVO LAYOUT */
-.tela-produtos-wrapper { max-width: 1250px; margin: 0 auto 80px; padding: 20px 32px; }
+.tela-produtos-wrapper { max-width: 1250px; margin: 0 auto 80px; padding: 20px 32px; background:rgba(255,255,255,0.65); border:1px solid #dbe7ec; border-radius:28px; box-shadow:0 8px 28px -10px rgba(25,80,110,.18); }
 .header-bar { display:flex; flex-wrap:wrap; align-items:center; gap:20px; justify-content:space-between; margin-bottom:28px; }
 .header-bar h1 { margin:0; font-size:1.8rem; color:#0f4c5c; letter-spacing:.5px; }
 .filtro-wrapper { display:flex; align-items:center; gap:12px; }
