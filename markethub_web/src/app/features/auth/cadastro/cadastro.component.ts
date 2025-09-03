@@ -14,6 +14,8 @@ import { User } from '../../../shared/entities/user.entity';
 })
 export class CadastroComponent {
   loading = false;
+  showPassword = false;
+  squares = Array.from({ length: 180 });
 
   private fb = inject(FormBuilder);
   private cadastroService = inject(CadastroService);
@@ -22,7 +24,6 @@ export class CadastroComponent {
   formCadastro = this.fb.group({
     nome: ['', [Validators.required, Validators.minLength(3)]],
     senha: ['', [Validators.required, Validators.minLength(6)]],
-    foto: [null],
     perfil: ['COMPRADOR', Validators.required],
   });
 
@@ -58,5 +59,9 @@ export class CadastroComponent {
   limparFormulario() {
     this.formCadastro.reset();
     this.loading = false;
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 }

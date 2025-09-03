@@ -24,7 +24,8 @@
 
 /* Logo */
 .logo h1 { margin:0; font-size:clamp(1.05rem,1.85vw,1.65rem); font-weight:800; letter-spacing:.6px; color:var(--clr-text); display:flex; align-items:center; gap:10px; background:linear-gradient(90deg,#fff,#b3d4ff); -webkit-background-clip:text; background-clip:text; color:transparent; }
-.logo h1::before { content:''; width:28px; height:28px; border-radius:10px; background:linear-gradient(135deg,var(--clr-primary) 0%, var(--clr-accent) 100%); box-shadow:0 6px 18px -6px rgba(13,110,253,.55), 0 4px 10px -4px rgba(255,138,45,.45); }
+.logo h1::before { display:none; }
+.logo-img { width:56px; height:56px; object-fit:contain; filter:drop-shadow(0 2px 8px rgba(0,0,0,.5)); transition:.3s; }
 
 /* Cart badge */
 .cart-link-wrapper { position:relative; display:inline-block; }
@@ -75,7 +76,7 @@
 }
 @keyframes fadeSlide { from { opacity:0; transform:translateY(-10px);} to { opacity:1; transform:translateY(0);} }
 @media (max-width:520px){ .logout-btn{ padding:6px 14px;} }
-@media (max-width:460px){ .menu { gap:6px; } .menu app-link { padding:8px 12px; } .logout-btn { padding:6px 12px; } .logo h1 { font-size:1.18rem; } }
+@media (max-width:460px){ .menu { gap:6px; } .menu app-link { padding:8px 12px; } .logout-btn { padding:6px 12px; } .logo h1 { font-size:1.18rem; } .logo-img { width:42px; height:42px; } }
 
 /* Redução de movimento */
 @media (prefers-reduced-motion: reduce){

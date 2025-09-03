@@ -14,6 +14,9 @@ import { LoginResponse } from '../../../shared/entities/user.entity';
 })
 export class LoginComponent {
   loading = false;
+  showPassword = false;
+  mode: 'login' | 'signup' = 'login';
+  squares = Array.from({ length: 180 });
 
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
@@ -23,6 +26,7 @@ export class LoginComponent {
   // Formulário de login
   loginForm = this.fb.group({
     nome: ['', [Validators.required]],
+    email: [''], // usado quando signup
     senha: ['', [Validators.required, Validators.minLength(6)]],
   });
 
@@ -57,5 +61,20 @@ export class LoginComponent {
   limparFormulario() {
     this.loginForm.reset();
     this.loading = false;
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+
+  setMode(newMode: 'login' | 'signup') {
+    this.mode = newMode;
+    if (newMode === 'signup') {
+      this.loginForm.get('email')?.addValidators([Validators.required, Validators.email]);
+    } else {
+      this.loginForm.get('email')?.clearValidators();
+      this.loginForm.get('email')?.setValue('');
+    }
+    this.loginForm.get('email')?.updateValueAndValidity();
   }
 }

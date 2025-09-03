@@ -31,9 +31,6 @@ export class AuthService {
           id_usuario: payload.id_usuario,
           nome: payload.nome,
           perfil: payload.perfil,
-          foto: payload.foto
-            ? `${environment.apiBaseUrl}${payload.foto}`
-            : environment.assets.defaultAvatar,
           authtoken: token
         };
         this.currentUserSubject.next(user);
@@ -52,9 +49,6 @@ export class AuthService {
           id_usuario: res.id_usuario,
           nome: res.nome,
           perfil: res.perfil,
-          foto: res.foto
-            ? `${environment.apiBaseUrl}${res.foto}`
-            : environment.assets.defaultAvatar,
           authtoken: res.token
         };
         this.currentUserSubject.next(user);
