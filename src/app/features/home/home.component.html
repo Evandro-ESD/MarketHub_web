@@ -1,0 +1,29 @@
+<div class="container">
+    <!-- main -->
+    <div class="main">
+                <div class="container-carousel">
+                        @if (carregando()) {
+                            <div class="carousel-skeleton">Carregando novidades...</div>
+                        } @else {
+                            <app-carousel [produtos]="produtos" [limite]="5"
+                                    (adicionarAoCarrinho)="aoAdicionarProdutoAoCarrinho($event)">
+                            </app-carousel>
+                        }
+                </div>
+
+        <div class="produtos-container">
+            <h2 class="produtos-titulo">Nossos Produtos</h2>
+                        <div class="produtos-grid">
+                                @if (carregando()) {
+                                    <div class="grid-skeleton">Carregando produtos...</div>
+                                } @else {
+                                    @for (produto of produtos; track produto.id) {
+                                    <app-card [imageUrl]="produto.imageUrl" [titulo]="produto.titulo" [descricao]="produto.descricao"
+                                            [preco]="produto.preco" (adicionarAoCarrinho)="aoAdicionarProdutoAoCarrinho(produto)" />
+                                    }
+                                }
+                        </div>
+        </div>
+    </div>
+    <app-footer />
+</div>
