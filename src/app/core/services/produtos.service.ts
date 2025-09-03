@@ -77,11 +77,21 @@ export class ProdutoService {
   // Atualizar produto
   updateProduto(id: number, formData: FormData) {
     const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: token ? `Bearer ${token}` : '',
-    });
+    // const headers = new HttpHeaders({
+    //   Authorization: token ? `Bearer ${token}` : '',
+    // });
+    const headers = new HttpHeaders({ Authorization: token ? `Bearer ${token}` : '' });
+
     return this.http.put(`${this.apiUrl}/${id}`, formData, { headers });
   }
+
+
+  // NÃO FAÇA ISSO:
+// const headers = new HttpHeaders({ Authorization: token ? `Bearer ${token}` : '', 'Content-Type': 'multipart/form-data' });
+
+// FAÇA ASSIM:
+
+
 
   // Excluir produto
   deleteProduto(id: number) {

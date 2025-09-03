@@ -170,7 +170,7 @@
       <div
         class="card-produto"
         *ngFor="let produto of produtosFiltrados; trackBy: trackById"
-        [class.editando]="produtoEditando?.id === produto.id"
+        [class.editando]="produtoEditando?.id === produto.id_produto"
       >
         <div class="thumb-wrapper">
           <img *ngIf="produto.foto; else semFoto" [src]="produto.foto" alt="{{ produto.nome_produto }}" />

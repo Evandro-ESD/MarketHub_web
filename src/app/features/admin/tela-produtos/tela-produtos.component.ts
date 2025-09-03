@@ -120,12 +120,17 @@ export class TelaProdutosComponent implements OnInit {
         .updateProduto(this.produtoEditando.id_produto, formData)
         .subscribe({
           next: () => {
+
+
+
+
             this.carregarProdutos();
             this.alerts.success('Produto atualizado com sucesso!');
             this.fecharModal();
           },
           error: (err) => {
-            console.error('Erro ao editar produto:', err);
+            console.log("formData: ", formData)
+            console.error('Erro ao editar produto no FRONT:', err);
             this.alerts.error('Erro ao editar produto');
           },
         });
