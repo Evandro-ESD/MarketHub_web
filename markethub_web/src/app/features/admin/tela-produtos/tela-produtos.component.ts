@@ -51,10 +51,12 @@ export class TelaProdutosComponent implements OnInit {
     this.auth.currentUser$.subscribe({
       next: (res: any) => {
         this.formProduto.patchValue({ id_vendedor: res?.id_usuario });
+        // Após ter o usuário, carregar apenas os produtos dele
+        if (res?.id_usuario) {
+          this.carregarMeusProdutos();
+        }
       }
     });
-
-  this.carregarProdutos();
   }
 
 
@@ -76,17 +78,12 @@ export class TelaProdutosComponent implements OnInit {
     if (fileInput) fileInput.value = '';
   }
 
-  carregarProdutos() {
+  carregarMeusProdutos() {
     this.loading = true;
-    this.produtoService.getAllProdutos().subscribe({
-      next: (produtos: any[]) => {
-        this.produtos = produtos;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Erro ao carregar produtos:', err);
-        this.loading = false;
-      }
+    this.produtoService.carregarMeusProdutos();
+    this.produtoService.getMeusProdutos().subscribe({
+      next: (lista) => { this.produtos = lista; this.loading = false; },
+      error: (err) => { console.error('Erro ao obter meus produtos', err); this.loading = false; }
     });
   }
 
@@ -116,7 +113,7 @@ export class TelaProdutosComponent implements OnInit {
     if (this.produtoEditando) {
       this.produtoService.updateProduto(this.produtoEditando.id_produto, formData).subscribe({
         next: () => {
-          this.carregarProdutos();
+          this.carregarMeusProdutos();
           this.alerts.success('Produto atualizado com sucesso!');
           this.fecharModal();
         },
@@ -128,7 +125,7 @@ export class TelaProdutosComponent implements OnInit {
     } else {
       this.produtoService.createProduto(formData).subscribe({
         next: () => {
-          this.carregarProdutos();
+          this.carregarMeusProdutos();
           this.alerts.success('Produto cadastrado com sucesso!');
           this.fecharModal();
         },
@@ -173,7 +170,7 @@ export class TelaProdutosComponent implements OnInit {
           this.cancelarEdicao();
         }
         this.alerts.success('Produto excluído com sucesso');
-        this.carregarProdutos();
+  this.carregarMeusProdutos();
       },
       error: (err) => {
         console.error('Erro ao excluir produto:', err);
