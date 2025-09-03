@@ -23,27 +23,28 @@ interface Produto {
     FooterComponent,
     CarouselComponent,
     CardComponent,
-],
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
   // No futuro, estes dados virão de uma chamada de API
   produtos: Produto[] = [];
+  todosOsProdutos: Produto[] = [];
   carregando = signal(true);
 
-  constructor(private carrinho: CarrinhoService, private produtoService: ProdutoService){}
+  constructor(private carrinho: CarrinhoService, private produtoService: ProdutoService) { }
 
   ngOnInit(): void {
     this.produtoService.getUltimosProdutos(10).subscribe({
       next: (lista) => {
-        const base = lista.slice(0,5); // já vem ordenado por id desc do backend
+        const base = lista.slice(0, 5); // já vem ordenado por id desc do backend
         this.produtos = base.map(p => {
           let url = 'assets/img/default-avatar.png';
           if (p.foto && typeof p.foto === 'string') {
-            if (p.foto.startsWith('http')) url = p.foto; 
-            else if (p.foto.startsWith('uploads/')) url = `http://localhost:3049/${p.foto}`; 
-            else if (!p.foto.includes('/')) url = `http://localhost:3049/uploads/produtos/${p.foto}`; 
+            if (p.foto.startsWith('http')) url = p.foto;
+            else if (p.foto.startsWith('uploads/')) url = `http://localhost:3049/${p.foto}`;
+            else if (!p.foto.includes('/')) url = `http://localhost:3049/uploads/produtos/${p.foto}`;
           }
           return { id: p.id_produto, titulo: p.nome_produto, descricao: p.descricao, preco: p.preco, imageUrl: url };
         });
@@ -51,6 +52,25 @@ export class HomeComponent implements OnInit {
       error: (err) => console.error('Erro carregando últimos produtos', err),
       complete: () => this.carregando.set(false)
     });
+  }
+
+  mostrarTodosProdutosDisponiveis() {
+    this.produtoService.getAllProdutos().subscribe({
+      next: (todosProdutos) => {
+        //  const base = todosProdutos.slice(0, 5); // já vem ordenado por id desc do backend
+         const base = todosProdutos
+        this.produtos = base.map(p => {
+          let url = 'assets/img/default-avatar.png';
+          if (p.foto && typeof p.foto === 'string') {
+            if (p.foto.startsWith('http')) url = p.foto;
+            else if (p.foto.startsWith('uploads/')) url = `http://localhost:3049/${p.foto}`;
+            else if (!p.foto.includes('/')) url = `http://localhost:3049/uploads/produtos/${p.foto}`;
+          }
+          return { id: p.id_produto, titulo: p.nome_produto, descricao: p.descricao, preco: p.preco, imageUrl: url };
+        });
+
+      }
+    })
   }
 
   aoAdicionarProdutoAoCarrinho(produto: Produto) {
@@ -66,9 +86,9 @@ export class HomeComponent implements OnInit {
     this.carrinho.adicionar(mockProduto, 1);
   }
 
-  scrollTopo(){
-    if(typeof window !== 'undefined'){
-      window.scrollTo({top:0, behavior:'smooth'});
+  scrollTopo() {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 }
